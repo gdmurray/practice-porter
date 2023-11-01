@@ -1,34 +1,12 @@
 import * as React from "react";
 import type { HeadFC, PageProps } from "gatsby";
-import {
-    Box,
-    Center,
-    Heading,
-    Highlight,
-    List,
-    ListItem,
-    Text,
-    useColorMode,
-    Code,
-    Button,
-    calc,
-    CodeProps,
-    Link as ChakraLink,
-    Divider,
-    Flex,
-    theme,
-} from "@chakra-ui/react";
+import { Box, Center, Heading, Highlight, Flex, theme } from "@chakra-ui/react";
 import Header from "../components/Header";
-import { SignupForm } from "@/components/SignupForm";
+import { SignupForm } from "../components/SignupForm";
 
 const $lineHeight = "1.4375rem";
 
-const PurpleCode = (props: CodeProps) => (
-    <Code colorScheme="purple" {...props} />
-);
-
 const IndexPage: React.FC<PageProps> = () => {
-    const { toggleColorMode } = useColorMode();
     return (
         <Box as="main">
             <Header />
