@@ -10,6 +10,7 @@ const theme = {
         },
     },
     fonts: {
+        heading: `'GeneralSans-Variable', sans-serif`,
         body: `'GeneralSans-Variable', sans-serif`,
     },
     styles: {
