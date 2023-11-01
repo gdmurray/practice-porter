@@ -22,6 +22,7 @@
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
     "@fontsource/alice": "^5.0.8",
+    "encoding": "^0.1.13",
     "framer-motion": "^10.16.4",
     "gatsby": "^5.12.4",
     "gatsby-adapter-netlify": "^1.0.2",

@@ -1,5 +1,6 @@
 import { GatsbyFunctionRequest, GatsbyFunctionResponse } from "gatsby";
 import { appendSignupToSheet, getSheetsClient } from "../modules/sheets";
+require("encoding");
 
 export default async function joinMailingListHandler(
     req: GatsbyFunctionRequest,
