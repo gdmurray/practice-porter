@@ -11,7 +11,7 @@ export default async function joinMailingListHandler(
         const client = await getSheetsClient();
         await appendSignupToSheet(client, req.body);
     } catch (err) {
-        console.error("Error Writing signup");
+        console.error("Error Writing signup: ", err);
         return res.status(500).json({ status: "Failure" });
     }
 
