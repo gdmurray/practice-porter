@@ -10,9 +10,9 @@ const IndexPage: React.FC<PageProps> = () => {
     return (
         <Box as="main">
             <Header />
-            <Center height="50vh" textAlign="center">
+            <Center display={"block"} textAlign="center" as="main" w={"100%"}>
                 <Flex gap={$lineHeight} flexDir="column">
-                    <Heading as={"h2"} size={"2xl"} maxW={"16ch"}>
+                    <Heading as={"h2"} size={"2xl"} mb={{ base: 4, md: 8 }}>
                         <Highlight
                             query="Soon"
                             styles={{
@@ -25,9 +25,13 @@ const IndexPage: React.FC<PageProps> = () => {
                     </Heading>
                     <Box
                         borderRadius={theme.radii.xl}
-                        m={{ sm: 4, md: 16, lg: 10 }}
-                        p={{ sm: 5, md: 5, lg: 16 }}
-                        w={theme.sizes.md}
+                        // m={{ base: 4, md: 16, lg: 10 }}
+                        p={{ base: 4, md: 6, lg: 16 }}
+                        maxW={theme.sizes.lg}
+                        w={"80vw"}
+                        minW={theme.sizes.sm}
+                        mr={"auto"}
+                        ml={"auto"}
                         shadow={theme.shadows.md}
                         bg={"gray.50"}
                         borderColor={"brand.400"}
