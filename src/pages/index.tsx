@@ -10,7 +10,13 @@ const IndexPage: React.FC<PageProps> = () => {
     return (
         <Box as="main">
             <Header />
-            <Center display={"block"} textAlign="center" as="main" w={"100%"}>
+            <Center
+                display={"block"}
+                textAlign="center"
+                as="main"
+                w={"100%"}
+                mb={24}
+            >
                 <Flex gap={$lineHeight} flexDir="column">
                     <Heading as={"h2"} size={"2xl"} mb={{ base: 4, md: 8 }}>
                         <Highlight

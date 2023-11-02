@@ -44,5 +44,5 @@ const theme = {
         },
     },
 };
-console.log("extending theme?");
+
 export default extendTheme(theme);

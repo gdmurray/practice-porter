@@ -10,18 +10,25 @@ import {
     FormLabel,
     Heading,
     Input,
+    Select,
     Stack,
-    theme,
     useTheme,
 } from "@chakra-ui/react";
 
 interface SignupFormInput {
     email: string;
-    practiceName: string;
+    practice: string;
     name: string;
-    averageMonthlyNewPatients: number;
-    location: string;
+    patients: string;
 }
+
+const selectOptions = {
+    "1-10": "1 - 10",
+    "11-25": "11 - 25",
+    "26-50": "26 - 50",
+    "51-100": "51 - 100",
+    "100+": "100+",
+};
 
 const ThankYouLogo = () => {
     const theme = useTheme();
@@ -113,7 +120,24 @@ export const SignupForm = () => {
                 method={"POST"}
                 action={"/api/join-mailing-list"}
             >
-                <Stack gap={"4"}>
+                <Stack gap={"6"}>
+                    <FormControl isInvalid={!!errors.name}>
+                        <FormLabel htmlFor="name">Name</FormLabel>
+                        <Input
+                            id="name"
+                            placeholder="Name"
+                            {...register<keyof SignupFormInput>("name", {
+                                required: "This is required",
+                                minLength: {
+                                    value: 4,
+                                    message: "Minimum length should be 4",
+                                },
+                            })}
+                        />
+                        <FormErrorMessage>
+                            {errors.name && errors.name.message}
+                        </FormErrorMessage>
+                    </FormControl>
                     <FormControl isInvalid={!!errors.email}>
                         <FormLabel htmlFor="email">Email</FormLabel>
                         <Input
@@ -132,60 +156,46 @@ export const SignupForm = () => {
                             {errors.name && errors.name.message}
                         </FormErrorMessage>
                     </FormControl>
-                    <FormControl isInvalid={!!errors.practiceName}>
+                    <FormControl isInvalid={!!errors.practice}>
                         <FormLabel htmlFor="practiceName">
                             Practice Name
                         </FormLabel>
                         <Input
                             id="practiceName"
                             placeholder="Practice Name"
-                            {...register<keyof SignupFormInput>(
-                                "practiceName",
-                                {
-                                    required: "This is required",
-                                    minLength: {
-                                        value: 2,
-                                        message: "Minimum length should be 2",
-                                    },
-                                },
-                            )}
-                        />
-                        <FormErrorMessage>
-                            {errors.practiceName && errors.practiceName.message}
-                        </FormErrorMessage>
-                    </FormControl>
-                    <FormControl isInvalid={!!errors.name}>
-                        <FormLabel htmlFor="name">Name</FormLabel>
-                        <Input
-                            id="name"
-                            placeholder="Name"
-                            {...register<keyof SignupFormInput>("name", {
+                            {...register<keyof SignupFormInput>("practice", {
                                 required: "This is required",
                                 minLength: {
-                                    value: 4,
-                                    message: "Minimum length should be 4",
+                                    value: 2,
+                                    message: "Minimum length should be 2",
                                 },
                             })}
                         />
                         <FormErrorMessage>
-                            {errors.name && errors.name.message}
+                            {errors.practice && errors.practice.message}
                         </FormErrorMessage>
                     </FormControl>
-                    <FormControl isInvalid={!!errors.averageMonthlyNewPatients}>
-                        <FormLabel htmlFor="averageMonthlyNewPatients">
+                    <FormControl isInvalid={!!errors.patients}>
+                        <FormLabel htmlFor="patients">
                             Average Monthly New Patients
                         </FormLabel>
-                        <Input
-                            id="averageMonthlyNewPatients"
+                        <Select
+                            id="patients"
                             placeholder="Patients"
-                            type={"number"}
-                            {...register<keyof SignupFormInput>(
-                                "averageMonthlyNewPatients",
-                            )}
-                        />
+                            defaultValue={"1-10"}
+                            {...register<keyof SignupFormInput>("patients")}
+                        >
+                            {Object.keys(selectOptions).map((option, index) => (
+                                <option
+                                    key={`patients-${index}`}
+                                    value={option}
+                                >
+                                    {selectOptions[option]}
+                                </option>
+                            ))}
+                        </Select>
                         <FormErrorMessage>
-                            {errors.averageMonthlyNewPatients &&
-                                errors.averageMonthlyNewPatients.message}
+                            {errors.patients && errors.patients.message}
                         </FormErrorMessage>
                     </FormControl>
                     {errors && errors.root?.serverError && (
