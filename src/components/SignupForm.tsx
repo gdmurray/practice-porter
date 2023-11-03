@@ -23,11 +23,12 @@ interface SignupFormInput {
 }
 
 const selectOptions = {
-    "1-10": "1 - 10",
-    "11-25": "11 - 25",
-    "26-50": "26 - 50",
-    "51-100": "51 - 100",
-    "100+": "100+",
+    "1-5": "1 - 5",
+    "6-10": "6 - 10",
+    "11-20": "11 - 20",
+    "21-40": "21 - 40",
+    "41-60": "41 - 60",
+    "60+": "60+",
 };
 
 const ThankYouLogo = () => {
@@ -182,7 +183,7 @@ export const SignupForm = () => {
                         <Select
                             id="patients"
                             placeholder="Patients"
-                            defaultValue={"1-10"}
+                            defaultValue={"1-5"}
                             {...register<keyof SignupFormInput>("patients")}
                         >
                             {Object.keys(selectOptions).map((option, index) => (
