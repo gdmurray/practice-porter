@@ -3,6 +3,7 @@ import type { HeadFC, PageProps } from "gatsby";
 import { Box, Center, Heading, Highlight, Flex, theme } from "@chakra-ui/react";
 import Header from "../components/Header";
 import { SignupForm } from "../components/SignupForm";
+import { graphql } from "gatsby";
 
 const $lineHeight = "1.4375rem";
 
@@ -51,4 +52,4 @@ const IndexPage: React.FC<PageProps> = () => {
 };
 
 export default IndexPage;
-export const Head: HeadFC = () => <title>Home Page</title>;
+export const Head: HeadFC = () => <title>Practice Porter</title>;
