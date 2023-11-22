@@ -17,6 +17,7 @@ const theme = {
         global: {
             body: {
                 bg: "#FBF6F2",
+                color: "#181716",
             },
             subtle: {
                 bg: "#E5E5E5",
@@ -40,6 +41,13 @@ const theme = {
                 fontWeight: "500",
                 fontSize: "sm",
                 marginBottom: "1",
+            },
+        },
+        Text: {
+            variants: {
+                secondary: {
+                    color: "#747373",
+                },
             },
         },
     },

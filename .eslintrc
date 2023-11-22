@@ -12,7 +12,12 @@
     "es6": true,
     "node": true
   },
-  "plugins": ["react", "jsx-a11y", "prettier", "@typescript-eslint"],
+  "plugins": [
+    "react",
+    "jsx-a11y",
+    "prettier",
+    "@typescript-eslint"
+  ],
   "extends": [
     "plugin:react/recommended",
     "plugin:react/jsx-runtime",
@@ -39,7 +44,13 @@
     "@typescript-eslint/explicit-function-return-type": "off",
     "@typescript-eslint/no-explicit-any": "off",
     "@typescript-eslint/no-var-requires": "off",
-    "@typescript-eslint/no-unused-vars": [2, { "argsIgnorePattern": "^_" }]
+    "@typescript-eslint/no-unused-vars": [
+      2,
+      {
+        "argsIgnorePattern": "^_",
+        "varsIgnorePattern": "React"
+      }
+    ]
   },
   "settings": {
     "import/resolver": {

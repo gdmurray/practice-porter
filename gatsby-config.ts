@@ -15,7 +15,12 @@ const config: GatsbyConfig = {
             resolve: "gatsby-source-contentful",
             options: {
                 accessToken: process.env.CONTENTFUL_ACCESS_TOKEN,
-                spaceId: "p7euki1xo8bo",
+                spaceId: "dimwdxeylbq0",
+                forceFullSync: true,
+                host: process.env.CONTENTFUL_HOST ?? "cdn.contentful.com",
+                richText: {
+                    resolveFieldLocales: true,
+                },
             },
         },
         "gatsby-plugin-image",
