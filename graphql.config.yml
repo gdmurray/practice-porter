@@ -1,0 +1,7 @@
+schema:
+  - .cache/typegen/schema.graphql
+extensions:
+  introspection: true
+  endpoints:
+    default:
+      url: http://localhost:8000/___graphql

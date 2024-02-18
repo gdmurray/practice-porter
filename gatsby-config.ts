@@ -23,6 +23,12 @@ const config: GatsbyConfig = {
                 },
             },
         },
+        // {
+        //     resolve: "gatsby-plugin-graphql-codegen",
+        //     options: {
+        //         fileName: `./src/graphql/generated.ts`, // or any path you prefer
+        //     },
+        // },
         "gatsby-plugin-image",
         "gatsby-plugin-sharp",
         "gatsby-transformer-sharp",

@@ -1,8 +1,16 @@
 import { Box } from "@chakra-ui/react";
+import { navigate } from "gatsby";
 
 export default function Logo(props) {
     return (
-        <Box {...props} w={[150, 200, 250]}>
+        <Box
+            {...props}
+            w={[150, 200, 250]}
+            cursor={"pointer"}
+            onClick={() => {
+                navigate("/");
+            }}
+        >
             <svg
                 id="Layer_1"
                 data-name="Layer 1"

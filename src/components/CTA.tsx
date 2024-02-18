@@ -3,6 +3,7 @@ import { graphql } from "gatsby";
 import { Heading, Stack, Text } from "@chakra-ui/react";
 import { ContentfulComponentFeatureBlock } from "@/components/sections";
 import { RichText } from "@/components/RichText";
+// import { CtaComponentFragment } from "@/graphql/generated";
 
 // direction = Column.. Stacked
 // Direction = Row... columns? lol
@@ -68,11 +69,19 @@ export default function CTA(props) {
 export const query = graphql`
     fragment CTAComponent on ContentfulComponentCta {
         title
-        description {
-            description
-        }
         content {
             raw
+            references {
+                ...ActionItemComponent
+            }
+            #            references {
+            #                ...ActionItemComponent
+            #                ...CustomComponent
+            #                contentful_id
+            #                internal {
+            #                    type
+            #                }
+            #            }
         }
         featuresOrientation
         features {

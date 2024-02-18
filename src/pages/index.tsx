@@ -9,10 +9,10 @@ import {
     theme,
     Stack,
 } from "@chakra-ui/react";
-import Header from "../components/Header";
 import * as sections from "../components/sections";
-import { SignupForm } from "../components/SignupForm";
+import { SignupForm } from "../components/custom/SignupForm";
 import { graphql } from "gatsby";
+import { Layout } from "@/components/Layout";
 
 const $lineHeight = "1.4375rem";
 
@@ -49,11 +49,10 @@ const ExistingSignupPage = () => (
     </Center>
 );
 const IndexPage: React.FC<PageProps> = ({ data }) => {
-    const { body } = data.contentfulLandingPage;
+    const { body, header, footer } = data.contentfulPage;
     console.log("Body: ", body);
     return (
-        <Box as="main">
-            <Header />
+        <Layout header={header} footer={footer}>
             <Stack gap={"12"}>
                 {body.map((elem) => {
                     const {
@@ -64,13 +63,10 @@ const IndexPage: React.FC<PageProps> = ({ data }) => {
                     const Component = sections[typeName] || (
                         <div>NOT FOUND</div>
                     );
-                    // if (typeName === "ContentfulComponentHero") {
                     return <Component key={id} {...componentProps} />;
-                    // }
-                    // return <></>;
                 })}
             </Stack>
-        </Box>
+        </Layout>
     );
 };
 
@@ -79,35 +75,20 @@ export const Head: HeadFC = () => <title>Practice Porter</title>;
 
 export const query = graphql`
     query {
-        contentfulLandingPage {
+        contentfulPage(slug: { eq: "landing-page" }) {
             id
+            header {
+                ...HeaderComponent
+            }
             body {
                 __typename
                 ...HeroComponent
                 ...DuplexComponent
                 ...CTAComponent
             }
+            footer {
+                ...FooterComponent
+            }
         }
     }
 `;
-
-//
-// fields {
-//     align {
-//         en_US
-//     }
-//     boxed {
-//         en_US
-//     }
-//     content {
-//         en_US {
-//             content {
-//                 content {
-//                     value
-//                     nodeType
-//                 }
-//                 nodeType
-//             }
-//         }
-//     }
-// }

@@ -50,6 +50,13 @@
         "argsIgnorePattern": "^_",
         "varsIgnorePattern": "React"
       }
+    ],
+    "no-unused-vars": [
+      "warn",
+      {
+        "argsIgnorePattern": "^_",
+        "varsIgnorePattern": "React"
+      }
     ]
   },
   "settings": {

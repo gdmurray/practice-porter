@@ -1,7 +1,8 @@
 import React from "react";
 import { Box, Flex, Text, useTheme } from "@chakra-ui/react";
-import { Link } from "gatsby";
+import { graphql, Link, navigate } from "gatsby";
 import Logo from "./Logo";
+import ActionItem from "@/components/ActionItem";
 
 const MenuItem = ({ children, isLast, to = "/", ...rest }) => {
     const theme = useTheme();
@@ -48,12 +49,13 @@ const MenuIcon = () => {
 };
 
 const Header = (props) => {
+    console.log("Header Props: ", props);
     const [show, setShow] = React.useState(false);
     const toggleMenu = () => setShow(!show);
     const theme = useTheme();
     return (
         <Flex
-            as="nav"
+            as="header"
             align="center"
             justify="space-between"
             wrap="wrap"
@@ -71,7 +73,11 @@ const Header = (props) => {
                 />
             </Flex>
 
-            <Box display={{ base: "block", md: "none" }} onClick={toggleMenu}>
+            <Box
+                cursor={"pointer"}
+                display={{ base: "block", md: "none" }}
+                onClick={toggleMenu}
+            >
                 {show ? <CloseIcon /> : <MenuIcon />}
             </Box>
 
@@ -90,7 +96,14 @@ const Header = (props) => {
                     direction={["column", "row", "row", "row"]}
                     pt={[4, 4, 0, 0]}
                 >
-                    <MenuItem to="/">Coming Soon</MenuItem>
+                    {props.links &&
+                        props.links.map((elem) => (
+                            <MenuItem key={elem.title} to={elem.link}>
+                                {elem.title}
+                            </MenuItem>
+                        ))}
+                    {props.cta && <ActionItem {...props.cta} />}
+                    {/* <MenuItem to="/">Coming Soon</MenuItem> */}
                 </Flex>
             </Box>
         </Flex>
@@ -98,3 +111,26 @@ const Header = (props) => {
 };
 
 export default Header;
+
+export const query = graphql`
+    fragment HeaderComponent on ContentfulHeader {
+        links {
+            title
+            icon
+            iconPosition
+            link
+            opensInNewTab
+        }
+        cta {
+            ...ActionItemComponent
+        }
+        logo {
+            description
+            title
+            file {
+                fileName
+                url
+            }
+        }
+    }
+`;

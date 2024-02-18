@@ -17,10 +17,26 @@ enum HeroImageLocation {
     RIGHT = "Right",
     BOTTOM = "Bottom",
     BACKGROUND = "Background",
+    TOP = "Top",
+}
+
+function getFlexDirection(imageLocation) {
+    if (imageLocation === HeroImageLocation.TOP) {
+        return "column-reverse";
+    }
+    if (imageLocation === HeroImageLocation.BOTTOM) {
+        return "column";
+    }
+    if (imageLocation === HeroImageLocation.LEFT) {
+        return "row-reverse";
+    }
+    if (imageLocation === HeroImageLocation.RIGHT) {
+        return "row";
+    }
 }
 
 export default function Hero(props) {
-    // console.log("HERO PROPS: ", props);
+    console.log("HERO PROPS: ", props);
     const imageLocation = props.imageLocation;
     if (imageLocation === HeroImageLocation.BACKGROUND) {
         return (
@@ -73,20 +89,25 @@ export default function Hero(props) {
             </Flex>
         );
     }
+
     return (
         <Stack
             minH={"100vh"}
             direction={{
                 base: "column",
-                md:
-                    imageLocation === HeroImageLocation.RIGHT
-                        ? "row"
-                        : "row-reverse",
+                md: getFlexDirection(imageLocation),
             }}
         >
             <Flex p={8} flex={1} align={"center"} justify={"center"}>
-                <Stack spacing={6} w={"full"} maxW={"lg"}>
-                    <Heading fontSize={{ base: "3xl", md: "4xl", lg: "5xl" }}>
+                <Stack spacing={6} w={"full"} maxW={"xl"}>
+                    <Heading
+                        fontSize={{ base: "3xl", md: "4xl", lg: "5xl" }}
+                        textAlign={
+                            imageLocation === HeroImageLocation.TOP
+                                ? "center"
+                                : "initial"
+                        }
+                    >
                         {props.title}
                     </Heading>
                     <RichText {...props.content} />

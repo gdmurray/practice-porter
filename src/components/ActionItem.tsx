@@ -35,7 +35,7 @@ export default function ActionItem(props) {
             variant={props.itemType.toLowerCase()}
             bg="brand.400"
             color={"white"}
-            _hover={{ bg: "brand.100" }}
+            _hover={{ bg: "brand.200" }}
             {...(props.width != null ? { maxW: props.width, w: "100%" } : {})}
             {...(props.width != null && props.align != null
                 ? { alignSelf: alignSelfMap[props.align] }
@@ -57,5 +57,6 @@ export const query = graphql`
         align
         width
         iconPosition
+        contentful_id
     }
 `;

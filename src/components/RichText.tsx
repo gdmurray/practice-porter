@@ -98,6 +98,8 @@ export const RichText = (text: { raw: any; references: any[] }) => {
         return <>Empty Text.</>;
     }
 
+    console.log(referenceMap);
+
     const options: Options = {
         renderMark: {
             [MARKS.BOLD]: (text) => <Text as="b">{text}</Text>,
