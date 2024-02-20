@@ -25,6 +25,7 @@
     "@fontsource/alice": "^5.0.8",
     "@loadable/component": "^5.16.3",
     "@tabler/icons-react": "^2.47.0",
+    "dayjs": "^1.11.10",
     "encoding": "^0.1.13",
     "framer-motion": "^11.0.5",
     "gatsby": "^5.13.3",
@@ -39,6 +40,9 @@
     "gatsby-source-filesystem": "^5.13.1",
     "gatsby-transformer-sharp": "^5.13.1",
     "googleapis": "^133.0.0",
+    "handlebars": "^4.7.8",
+    "html-minifier": "^4.0.0",
+    "html-to-text": "^9.0.5",
     "nodemailer": "^6.9.9",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -48,7 +52,10 @@
   "devDependencies": {
     "@babel/preset-react": "^7.23.3",
     "@babel/preset-typescript": "^7.23.3",
+    "@types/html-minifier": "^4.0.5",
+    "@types/html-to-text": "^9.0.4",
     "@types/node": "^20.11.19",
+    "@types/nodemailer": "^6.4.14",
     "@types/react": "^18.2.55",
     "@types/react-dom": "^18.2.19",
     "@typescript-eslint/eslint-plugin": "^7.0.1",
@@ -65,6 +72,7 @@
     "eslint-plugin-promise": "^6.1.1",
     "eslint-plugin-react": "^7.33.2",
     "eslint-plugin-react-hooks": "^4.6.0",
+    "handlebars-loader": "^1.7.3",
     "prettier": "^3.2.5",
     "typescript": "^5.3.3"
   }

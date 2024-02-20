@@ -11,6 +11,25 @@ export const onCreateWebpackConfig: GatsbyNode["onCreateWebpackConfig"] = ({
     actions.setWebpackConfig({
         resolve: {
             plugins: [new TsconfigPathsPlugin()],
+            // Add the directories where webpack should look for modules
+            modules: ["node_modules", "src"],
+            // Alias configuration
+            alias: {
+                // Alias for handlebars
+                handlebars: "handlebars/runtime.js",
+            },
+            // Fallback configuration (assuming you're using Webpack 5, you might need to adjust for Webpack 4)
+            fallback: {
+                path: require.resolve("path-browserify"),
+            },
+        },
+        module: {
+            rules: [
+                {
+                    test: /\.(handlebars|hbs)$/,
+                    loader: "handlebars-loader",
+                },
+            ],
         },
     });
 };

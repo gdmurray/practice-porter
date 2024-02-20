@@ -17,6 +17,5 @@ export default CustomComponent;
 export const query = graphql`
     fragment CustomComponent on ContentfulCustomComponent {
         name
-        contentful_id
     }
 `;

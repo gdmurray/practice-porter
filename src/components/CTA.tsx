@@ -23,8 +23,9 @@ export default function CTA(props) {
             alignSelf={"center"}
             textAlign={"center"}
             gap={8}
+            {...(props.anchor != null ? { id: props.anchor } : {})}
         >
-            <Stack>
+            <Stack gap={8}>
                 <Heading as={"h2"}>{props.title}</Heading>
                 {props.description && props.description.description && (
                     <Text fontSize={"xl"} variant={"secondary"}>
@@ -40,6 +41,7 @@ export default function CTA(props) {
                             ? "row"
                             : "column"
                     }
+                    gap={"4"}
                     sx={{
                         "& > div": {
                             flexGrow: 1,
@@ -69,19 +71,27 @@ export default function CTA(props) {
 export const query = graphql`
     fragment CTAComponent on ContentfulComponentCta {
         title
+        description {
+            description
+        }
         content {
             raw
             references {
-                ...ActionItemComponent
+                ... on ContentfulComponentActionItem {
+                    ...ActionItemComponent
+                    contentful_id
+                    internal {
+                        type
+                    }
+                }
+                ... on ContentfulCustomComponent {
+                    ...CustomComponent
+                    contentful_id
+                    internal {
+                        type
+                    }
+                }
             }
-            #            references {
-            #                ...ActionItemComponent
-            #                ...CustomComponent
-            #                contentful_id
-            #                internal {
-            #                    type
-            #                }
-            #            }
         }
         featuresOrientation
         features {
@@ -93,6 +103,7 @@ export const query = graphql`
         }
         align
         boxed
+        anchor
         #        features {
         #            fields {
         #                title {

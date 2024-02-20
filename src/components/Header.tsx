@@ -1,6 +1,6 @@
 import React from "react";
-import { Box, Flex, Text, useTheme } from "@chakra-ui/react";
-import { graphql, Link, navigate } from "gatsby";
+import { Box, Button, Flex, Text, useTheme } from "@chakra-ui/react";
+import { graphql, Link } from "gatsby";
 import Logo from "./Logo";
 import ActionItem from "@/components/ActionItem";
 
@@ -53,6 +53,25 @@ const Header = (props) => {
     const [show, setShow] = React.useState(false);
     const toggleMenu = () => setShow(!show);
     const theme = useTheme();
+
+    async function testEmail() {
+        await window
+            .fetch(`/api/test-email`, {
+                method: `POST`,
+                headers: {
+                    "content-type": "application/json",
+                },
+            })
+            .then(async (res) => {
+                const json = await res.json();
+                console.log("JSON RESPONSE: ", json);
+                return json;
+            })
+            .catch((error) => {
+                console.log("ERROR: ", error);
+            });
+    }
+
     return (
         <Flex
             as="header"

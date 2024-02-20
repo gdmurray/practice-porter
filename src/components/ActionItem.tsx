@@ -1,5 +1,5 @@
 import React from "react";
-import { graphql } from "gatsby";
+import { graphql, navigate } from "gatsby";
 import { Button } from "@chakra-ui/react";
 import { LazyIcon } from "@/components/LazyIcon";
 
@@ -30,12 +30,30 @@ export default function ActionItem(props) {
                 : { rightIcon: <LazyIcon iconName={props.icon} /> }
             : {};
 
+    const scrollToDiv = (divId) => {
+        const divElement = document.getElementById(divId.replace("#", ""));
+        divElement.scrollIntoView({ behavior: "smooth" });
+    };
+
+    console.log("ACtion Props: ", props);
+
     return (
         <Button
             variant={props.itemType.toLowerCase()}
             bg="brand.400"
             color={"white"}
             _hover={{ bg: "brand.200" }}
+            onClick={
+                props.link != null
+                    ? props.link.startsWith("#")
+                        ? () => {
+                              scrollToDiv(props.link);
+                          }
+                        : () => {
+                              navigate(props.link);
+                          }
+                    : undefined
+            }
             {...(props.width != null ? { maxW: props.width, w: "100%" } : {})}
             {...(props.width != null && props.align != null
                 ? { alignSelf: alignSelfMap[props.align] }
@@ -57,6 +75,5 @@ export const query = graphql`
         align
         width
         iconPosition
-        contentful_id
     }
 `;

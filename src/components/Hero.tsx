@@ -46,6 +46,7 @@ export default function Hero(props) {
                 backgroundImage={`url(${props.image.file.url})`}
                 backgroundSize={"cover"}
                 backgroundPosition={"center center"}
+                {...(props.anchor != null ? { id: props.anchor } : {})}
             >
                 <VStack
                     w={"full"}
@@ -97,6 +98,7 @@ export default function Hero(props) {
                 base: "column",
                 md: getFlexDirection(imageLocation),
             }}
+            {...(props.anchor != null ? { id: props.anchor } : {})}
         >
             <Flex p={8} flex={1} align={"center"} justify={"center"}>
                 <Stack spacing={6} w={"full"} maxW={"xl"}>

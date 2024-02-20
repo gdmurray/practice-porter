@@ -24,6 +24,7 @@ export default function Duplex(props) {
                 base: "column",
                 md: props.align === DuplexAlign.RIGHT ? "row" : "row-reverse",
             }}
+            {...(props.anchor != null ? { id: props.anchor } : {})}
         >
             <Flex p={8} flex={1} align={"center"} justify={"center"}>
                 <Stack spacing={6} w={"full"} maxW={"lg"}>
@@ -126,5 +127,6 @@ export const query = graphql`
             #            }
         }
         align
+        anchor
     }
 `;

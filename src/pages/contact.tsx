@@ -1,12 +1,11 @@
-import React from "react";
-import { Box, Stack } from "@chakra-ui/react";
-import { graphql } from "gatsby";
 import { Layout } from "@/components/Layout";
-import * as sections from "../components/sections";
+import * as sections from "@/components/sections";
+import React from "react";
+import { Stack } from "@chakra-ui/react";
+import { graphql } from "gatsby";
 
-const FeaturesPage = ({ data }) => {
+const ContactPage = ({ data }) => {
     const { body, header, footer } = data.contentfulPage;
-    console.log("Features Page Body: ", body);
     return (
         <Layout header={header} footer={footer}>
             <Stack gap={"12"}>
@@ -16,23 +15,25 @@ const FeaturesPage = ({ data }) => {
                         __typename: typeName,
                         ...componentProps
                     } = elem;
+                    console.log("Typename: ", typeName);
                     const Component = sections[typeName] || null;
+                    console.log("Component: ", Component);
+                    // return <>Scontent of {typeName}</>;
                     if (Component != null) {
                         return <Component key={id} {...componentProps} />;
                     }
-                    console.error("Could not find component: ", typeName);
-                    return <></>;
+                    return <>NOT FOUND</>;
                 })}
             </Stack>
         </Layout>
     );
 };
 
-export default FeaturesPage;
+export default ContactPage;
 
 export const query = graphql`
     query {
-        contentfulPage(slug: { eq: "features" }) {
+        contentfulPage(slug: { eq: "contact" }) {
             id
             header {
                 ...HeaderComponent

@@ -1,6 +1,6 @@
 import React from "react";
 import { graphql } from "gatsby";
-import { Stack, Text } from "@chakra-ui/react";
+import { Box, Stack, Text } from "@chakra-ui/react";
 import { LazyIcon } from "@/components/LazyIcon";
 // import { FeatureBlockComponentFragment } from "@/graphql/generated";
 import { TablerIconsProps } from "@tabler/icons-react";
@@ -11,8 +11,6 @@ enum FeatureBlockLayout {
 }
 
 export default function FeatureBlock(props) {
-    console.log("feature block props: ", props);
-    console.log("Feature Block Icon: ", props.icon);
     return (
         <Stack
             direction={
@@ -25,10 +23,21 @@ export default function FeatureBlock(props) {
             }
         >
             {props.icon != null ? (
-                <LazyIcon
-                    iconName={props.icon}
-                    props={props.iconAttributes as unknown as TablerIconsProps}
-                />
+                <Box
+                    w={
+                        props.iconAttributes != null &&
+                        props.iconAttributes.size
+                            ? `${props.iconAttributes.size}px`
+                            : "initial"
+                    }
+                >
+                    <LazyIcon
+                        iconName={props.icon}
+                        props={
+                            props.iconAttributes as unknown as TablerIconsProps
+                        }
+                    />
+                </Box>
             ) : (
                 <div>Image or Icon</div>
             )}

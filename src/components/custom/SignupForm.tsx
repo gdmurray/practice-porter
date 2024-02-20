@@ -4,6 +4,7 @@ import {
     Alert,
     AlertIcon,
     AlertTitle,
+    Box,
     Button,
     FormControl,
     FormErrorMessage,
@@ -64,15 +65,13 @@ const ThankYouLogo = () => {
     );
 };
 
-export const SignupForm = () => {
+const FormContent = () => {
     const {
         handleSubmit,
         register,
         setError,
         formState: { errors, isSubmitting, isSubmitSuccessful },
     } = useForm<SignupFormInput>();
-
-    const theme = useTheme();
 
     async function onSubmit(values) {
         return await window
@@ -107,15 +106,15 @@ export const SignupForm = () => {
 
     return (
         <>
-            <Heading
-                as={"h3"}
-                fontWeight={theme.fontWeights.medium}
-                size={"md"}
-                color={"gray.800"}
-                mb={4}
-            >
-                Join the wait list
-            </Heading>
+            {/* <Heading */}
+            {/*    as={"h3"} */}
+            {/*    fontWeight={theme.fontWeights.medium} */}
+            {/*    size={"md"} */}
+            {/*    color={"gray.800"} */}
+            {/*    mb={4} */}
+            {/* > */}
+            {/*    Join the wait list */}
+            {/* </Heading> */}
             <form
                 onSubmit={handleSubmit(onSubmit)}
                 method={"POST"}
@@ -221,5 +220,24 @@ export const SignupForm = () => {
                 </Stack>
             </form>
         </>
+    );
+};
+
+export const SignupForm = () => {
+    const theme = useTheme();
+    return (
+        <Box
+            bg={"bg.surface"}
+            borderRadius={"lg"}
+            p={{ base: 4, md: 6, lg: 16 }}
+            maxW={theme.sizes.lg}
+            minW={theme.sizes.sm}
+            mr={"auto"}
+            ml={"auto"}
+            shadow={theme.shadows.md}
+            borderColor={"border.default"}
+        >
+            <FormContent />
+        </Box>
     );
 };

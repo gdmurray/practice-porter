@@ -15,7 +15,7 @@ const config: GatsbyConfig = {
             resolve: "gatsby-source-contentful",
             options: {
                 accessToken: process.env.CONTENTFUL_ACCESS_TOKEN,
-                spaceId: "dimwdxeylbq0",
+                spaceId: process.env.CONTENTFUL_SPACE_ID ?? "dimwdxeylbq0",
                 forceFullSync: true,
                 host: process.env.CONTENTFUL_HOST ?? "cdn.contentful.com",
                 richText: {

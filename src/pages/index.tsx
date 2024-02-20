@@ -60,10 +60,12 @@ const IndexPage: React.FC<PageProps> = ({ data }) => {
                         __typename: typeName,
                         ...componentProps
                     } = elem;
-                    const Component = sections[typeName] || (
-                        <div>NOT FOUND</div>
-                    );
-                    return <Component key={id} {...componentProps} />;
+                    const Component = sections[typeName] || null;
+                    if (Component != null) {
+                        return <Component key={id} {...componentProps} />;
+                    }
+                    console.error("Could not find component: ", typeName);
+                    return <></>;
                 })}
             </Stack>
         </Layout>
