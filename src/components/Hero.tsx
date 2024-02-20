@@ -11,6 +11,7 @@ import {
     VStack,
 } from "@chakra-ui/react";
 import { RichText } from "@/components/RichText";
+import { Asset } from "@/components/Asset";
 
 enum HeroImageLocation {
     LEFT = "Left",
@@ -54,9 +55,10 @@ export default function Hero(props) {
                     px={useBreakpointValue({ base: 4, md: 8 })}
                     bgGradient={"linear(to-r, blackAlpha.600, transparent)"}
                 >
-                    <Stack maxW={"2xl"} align={"flex-start"} spacing={6}>
+                    <Stack maxW={"2xl"} align={"center"} spacing={6}>
                         <Text
                             color={"white"}
+                            align={"center"}
                             fontWeight={700}
                             lineHeight={1.2}
                             fontSize={useBreakpointValue({
@@ -101,7 +103,7 @@ export default function Hero(props) {
             {...(props.anchor != null ? { id: props.anchor } : {})}
         >
             <Flex p={8} flex={1} align={"center"} justify={"center"}>
-                <Stack spacing={6} w={"full"} maxW={"xl"}>
+                <Stack spacing={8} w={"full"} maxW={"xl"}>
                     <Heading
                         fontSize={{ base: "3xl", md: "4xl", lg: "5xl" }}
                         textAlign={
@@ -140,10 +142,9 @@ export default function Hero(props) {
                 </Stack>
             </Flex>
             <Flex flex={1}>
-                <Image
-                    alt={props.image.title}
-                    objectFit={"cover"}
-                    src={props.image.file.url}
+                <Asset
+                    props={props.image}
+                    contentProps={{ objectFit: "cover" }}
                 />
             </Flex>
         </Stack>
@@ -164,28 +165,8 @@ export const query = graphql`
             }
         }
         image {
-            title
-            description
-            file {
-                fileName
-                url
-            }
+            ...AssetComponent
         }
         imageLocation
-        #        background
-        #        image {
-        #            fields {
-        #                description {
-        #                    en_US
-        #                }
-        #                file {
-        #                    en_US {
-        #                        contentType
-        #                        fileName
-        #                        url
-        #                    }
-        #                }
-        #            }
-        #        }
     }
 `;

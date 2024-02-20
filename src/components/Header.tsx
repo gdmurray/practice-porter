@@ -121,6 +121,11 @@ const Header = (props) => {
                                 {elem.title}
                             </MenuItem>
                         ))}
+                    <Box
+                        height={"25px"}
+                        borderLeft={"1px solid #181716"}
+                        mr={8}
+                    />
                     {props.cta && <ActionItem {...props.cta} />}
                     {/* <MenuItem to="/">Coming Soon</MenuItem> */}
                 </Flex>

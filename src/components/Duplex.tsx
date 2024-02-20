@@ -9,6 +9,7 @@ import {
     Image,
 } from "@chakra-ui/react";
 import { RichText } from "@/components/RichText";
+import { Asset } from "@/components/Asset";
 
 enum DuplexAlign {
     LEFT = "Left",
@@ -27,7 +28,7 @@ export default function Duplex(props) {
             {...(props.anchor != null ? { id: props.anchor } : {})}
         >
             <Flex p={8} flex={1} align={"center"} justify={"center"}>
-                <Stack spacing={6} w={"full"} maxW={"lg"}>
+                <Stack spacing={8} w={"full"} maxW={"lg"}>
                     <Heading as={"h3"}>{props.title}</Heading>
                     <RichText {...props.description} />
                     {/* <Heading fontSize={{ base: "3xl", md: "4xl", lg: "5xl" }}> */}
@@ -82,10 +83,9 @@ export default function Duplex(props) {
                 </Stack>
             </Flex>
             <Flex flex={1}>
-                <Image
-                    alt={props.image.title}
-                    objectFit={"contain"}
-                    src={props.image.file.url}
+                <Asset
+                    props={props.image}
+                    contentProps={{ objectFit: "contain" }}
                 />
             </Flex>
         </Stack>
@@ -107,24 +107,7 @@ export const query = graphql`
             }
         }
         image {
-            file {
-                contentType
-                fileName
-                url
-            }
-            description
-            #            fields {
-            #                description {
-            #                    en_US
-            #                }
-            #                file {
-            #                    en_US {
-            #                        contentType
-            #                        fileName
-            #                        url
-            #                    }
-            #                }
-            #            }
+            ...AssetComponent
         }
         align
         anchor

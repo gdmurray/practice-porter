@@ -136,12 +136,7 @@ export const query = graphql`
             section
         }
         logo {
-            description
-            title
-            file {
-                fileName
-                url
-            }
+            ...AssetComponent
         }
         description
         disclaimer

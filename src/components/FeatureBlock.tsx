@@ -10,7 +10,23 @@ enum FeatureBlockLayout {
     HORIZONTAL = "Horizontal",
 }
 
+// TODO: Implement Image Icon
+
 export default function FeatureBlock(props) {
+    console.log("Feature Props: ", props);
+    const iconHeight = props.iconAttributes?.size || 24;
+    console.log("Icon Height: ", iconHeight);
+    const boxHeight = iconHeight + iconHeight * 0.25;
+
+    function getIconBackgroundProps(props) {
+        if (props.iconBackground) {
+            return {
+                borderRadius: `${boxHeight}px`,
+                background: props.iconBackground,
+            };
+        }
+        return {};
+    }
     return (
         <Stack
             direction={
@@ -21,15 +37,17 @@ export default function FeatureBlock(props) {
                     ? "center"
                     : "flex-start"
             }
+            gap={4}
         >
             {props.icon != null ? (
                 <Box
-                    w={
-                        props.iconAttributes != null &&
-                        props.iconAttributes.size
-                            ? `${props.iconAttributes.size}px`
-                            : "initial"
-                    }
+                    w={`${boxHeight}px`}
+                    h={`${boxHeight}px`}
+                    display={"flex"}
+                    justifyContent={"center"}
+                    alignItems={"center"}
+                    flexShrink={0}
+                    {...getIconBackgroundProps(props)}
                 >
                     <LazyIcon
                         iconName={props.icon}
@@ -69,5 +87,6 @@ export const query = graphql`
             stroke
             color
         }
+        iconBackground
     }
 `;

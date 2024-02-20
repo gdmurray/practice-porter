@@ -37,12 +37,38 @@ export default function ActionItem(props) {
 
     console.log("ACtion Props: ", props);
 
+    function getButtonProps(props) {
+        const itemType = props.itemType.toLowerCase();
+        if (itemType === "outline") {
+            return {
+                variant: itemType,
+                bg: "white",
+                color: "bgAccent.default",
+                borderColor: "bgAccent.default",
+            };
+        }
+        if (itemType === "solid") {
+            return {
+                variant: itemType,
+                bg: "brand.400",
+                color: "white",
+                _hover: { bg: "brand.200" },
+            };
+        }
+        return {};
+    }
+
+    function getAdditionalStyles(props) {
+        if (props.styles && props.styles.internal.content) {
+            return JSON.parse(props.styles.internal.content);
+        }
+        return {};
+    }
+    console.log(props.itemType);
     return (
         <Button
-            variant={props.itemType.toLowerCase()}
-            bg="brand.400"
-            color={"white"}
-            _hover={{ bg: "brand.200" }}
+            {...getButtonProps(props)}
+            {...getAdditionalStyles(props)}
             onClick={
                 props.link != null
                     ? props.link.startsWith("#")
@@ -75,5 +101,10 @@ export const query = graphql`
         align
         width
         iconPosition
+        styles {
+            internal {
+                content
+            }
+        }
     }
 `;
