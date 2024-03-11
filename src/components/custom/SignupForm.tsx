@@ -210,7 +210,7 @@ const FormContent = () => {
                         mt={4}
                         bg="brand.400"
                         color={"white"}
-                        _hover={{ bg: "brand.100" }}
+                        _hover={{ bg: "brand.300" }}
                         disabled={isSubmitSuccessful}
                         isLoading={isSubmitting}
                         type="submit"

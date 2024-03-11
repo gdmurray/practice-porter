@@ -1,18 +1,10 @@
 import * as React from "react";
 import type { HeadFC, PageProps } from "gatsby";
-import {
-    Box,
-    Center,
-    Heading,
-    Highlight,
-    Flex,
-    theme,
-    Stack,
-} from "@chakra-ui/react";
-import * as sections from "../components/sections";
+import { Box, Center, Heading, Highlight, Flex, theme } from "@chakra-ui/react";
 import { SignupForm } from "../components/custom/SignupForm";
 import { graphql } from "gatsby";
-import { Layout } from "@/components/Layout";
+import { Page } from "@/components/Page";
+import { SEOHead } from "@/components/SeoMetadata";
 
 const $lineHeight = "1.4375rem";
 
@@ -49,31 +41,13 @@ const ExistingSignupPage = () => (
     </Center>
 );
 const IndexPage: React.FC<PageProps> = ({ data }) => {
-    const { body, header, footer } = data.contentfulPage;
-    console.log("Body: ", body);
-    return (
-        <Layout header={header} footer={footer}>
-            <Stack gap={"12"}>
-                {body.map((elem) => {
-                    const {
-                        id,
-                        __typename: typeName,
-                        ...componentProps
-                    } = elem;
-                    const Component = sections[typeName] || null;
-                    if (Component != null) {
-                        return <Component key={id} {...componentProps} />;
-                    }
-                    console.error("Could not find component: ", typeName);
-                    return <></>;
-                })}
-            </Stack>
-        </Layout>
-    );
+    return <Page data={data} />;
 };
 
 export default IndexPage;
-export const Head: HeadFC = () => <title>Practice Porter</title>;
+export const Head: HeadFC = ({ data }) => {
+    return <SEOHead data={data} />;
+};
 
 export const query = graphql`
     query {
@@ -90,6 +64,9 @@ export const query = graphql`
             }
             footer {
                 ...FooterComponent
+            }
+            seo {
+                ...SeoComponent
             }
         }
     }

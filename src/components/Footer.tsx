@@ -1,4 +1,5 @@
 import { graphql } from "gatsby";
+import React from "react";
 import {
     Box,
     ButtonGroup,
@@ -15,7 +16,7 @@ import {
 import { LazyIcon } from "@/components/LazyIcon";
 
 // Utility function to convert hex to RGB
-function hexToRgb(hex) {
+function hexToRgb(hex: string) {
     const r = parseInt(hex.slice(1, 3), 16);
     const g = parseInt(hex.slice(3, 5), 16);
     const b = parseInt(hex.slice(5, 7), 16);
@@ -55,7 +56,7 @@ export default function Footer(props) {
                         templateColumns={`repeat(4, minmax(0px, 1fr));`}
                     >
                         {props.sectionOrder.map((section) => (
-                            <Stack key={section} gap={4}>
+                            <Stack key={section} gap={4} pt={4}>
                                 <Text
                                     fontSize={"sm"}
                                     fontWeight={"600"}

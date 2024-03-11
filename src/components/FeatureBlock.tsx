@@ -4,6 +4,7 @@ import { Box, Stack, Text } from "@chakra-ui/react";
 import { LazyIcon } from "@/components/LazyIcon";
 // import { FeatureBlockComponentFragment } from "@/graphql/generated";
 import { TablerIconsProps } from "@tabler/icons-react";
+import { Asset } from "@/components/Asset";
 
 enum FeatureBlockLayout {
     VERTICAL = "Vertical",
@@ -27,19 +28,10 @@ export default function FeatureBlock(props) {
         }
         return {};
     }
-    return (
-        <Stack
-            direction={
-                props.layout === FeatureBlockLayout.VERTICAL ? "column" : "row"
-            }
-            alignItems={
-                props.layout === FeatureBlockLayout.VERTICAL
-                    ? "center"
-                    : "flex-start"
-            }
-            gap={4}
-        >
-            {props.icon != null ? (
+
+    function getFeatureImage(props) {
+        if (props.icon != null) {
+            return (
                 <Box
                     w={`${boxHeight}px`}
                     h={`${boxHeight}px`}
@@ -56,9 +48,28 @@ export default function FeatureBlock(props) {
                         }
                     />
                 </Box>
-            ) : (
-                <div>Image or Icon</div>
-            )}
+            );
+        }
+        if (props.image) {
+            return (
+                <Asset props={props.image} contentProps={{ width: "250px" }} />
+            );
+        }
+    }
+
+    return (
+        <Stack
+            direction={
+                props.layout === FeatureBlockLayout.VERTICAL ? "column" : "row"
+            }
+            alignItems={
+                props.layout === FeatureBlockLayout.VERTICAL
+                    ? "center"
+                    : "flex-start"
+            }
+            gap={4}
+        >
+            {getFeatureImage(props)}
             <Stack>
                 <Text fontSize="xl" fontWeight={"medium"}>
                     {props.title}
@@ -86,6 +97,9 @@ export const query = graphql`
             size
             stroke
             color
+        }
+        image {
+            ...AssetComponent
         }
         iconBackground
     }

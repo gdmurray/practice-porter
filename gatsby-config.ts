@@ -39,7 +39,7 @@ const config: GatsbyConfig = {
             options: {
                 name: "Practice Porter",
                 start_url: "/",
-                icon: "src/images/favicon.png",
+                icon: "src/images/favicon-light.png",
             },
         },
         {

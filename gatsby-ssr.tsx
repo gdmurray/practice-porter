@@ -11,5 +11,11 @@ export const onRenderBody = ({ setHeadComponents }) => {
             crossOrigin="anonymous"
             key="generalSansFont"
         />,
+        <link
+            rel={"icon"}
+            href={"/favicon-light.png"}
+            type={"image/png"}
+            key={"favicon"}
+        />,
     ]);
 };

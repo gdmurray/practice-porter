@@ -9,7 +9,8 @@ const MenuItem = ({ children, isLast, to = "/", ...rest }) => {
     return (
         <Text
             mr={{ base: 0, sm: isLast ? 0 : 8 }}
-            color={theme.colors.black}
+            color={theme.colors.gray["700"]}
+            _hover={{ color: "fg.default" }}
             fontWeight={theme.fontWeights.medium}
             fontSize={theme.fontSizes.lg}
             display="block"
@@ -53,24 +54,6 @@ const Header = (props) => {
     const [show, setShow] = React.useState(false);
     const toggleMenu = () => setShow(!show);
     const theme = useTheme();
-
-    async function testEmail() {
-        await window
-            .fetch(`/api/test-email`, {
-                method: `POST`,
-                headers: {
-                    "content-type": "application/json",
-                },
-            })
-            .then(async (res) => {
-                const json = await res.json();
-                console.log("JSON RESPONSE: ", json);
-                return json;
-            })
-            .catch((error) => {
-                console.log("ERROR: ", error);
-            });
-    }
 
     return (
         <Flex
@@ -117,13 +100,18 @@ const Header = (props) => {
                 >
                     {props.links &&
                         props.links.map((elem) => (
-                            <MenuItem key={elem.title} to={elem.link}>
+                            <MenuItem
+                                isLast={false}
+                                key={elem.title}
+                                to={elem.link}
+                            >
                                 {elem.title}
                             </MenuItem>
                         ))}
                     <Box
                         height={"25px"}
-                        borderLeft={"1px solid #181716"}
+                        borderLeft={"1px solid"}
+                        borderLeftColor={"gray.600"}
                         mr={8}
                     />
                     {props.cta && <ActionItem {...props.cta} />}

@@ -103,7 +103,11 @@ export default function CTA(props) {
                     </Stack>
                 )}
                 {props.content && (
-                    <div>
+                    <div
+                        style={{
+                            textAlign: props.alignContentText ?? "inherit",
+                        }}
+                    >
                         <RichText {...props.content} />
                     </div>
                 )}
@@ -154,6 +158,7 @@ export const query = graphql`
                 content
             }
         }
+        alignContentText
         #        features {
         #            fields {
         #                title {

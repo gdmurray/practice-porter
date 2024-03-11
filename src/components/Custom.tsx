@@ -1,8 +1,11 @@
+import React from "react";
 import { SignupForm } from "@/components/custom/SignupForm";
+import { ContactForm } from "@/components/custom/ContactForm";
 import { graphql } from "gatsby";
 
 const customComponents = {
     SignupForm,
+    ContactForm,
 };
 
 export const CustomComponent = ({ name }: { name: string }) => {

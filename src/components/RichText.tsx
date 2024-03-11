@@ -26,7 +26,12 @@ import {
 import * as Components from "./sections";
 
 const defaultNodeRenderers: RenderNode = {
-    [BLOCKS.PARAGRAPH]: (node, children) => <Text mb={4}>{children}</Text>,
+    [BLOCKS.PARAGRAPH]: (node, children) => {
+        if (children.length === 1 && children[0] === "") {
+            return <Text mb={4}>&nbsp;</Text>;
+        }
+        return <Text mb={4}>{children}</Text>;
+    },
     [BLOCKS.HEADING_1]: (node, children) => (
         <Heading as="h1" size="xl" mb={4}>
             {children}
@@ -117,7 +122,6 @@ export const RichText = (text: { raw: any; references: any[] }) => {
                     const Component = Components[componentType] || (
                         <div>Not Found</div>
                     );
-                    console.log(data);
                     if (children && children.length > 0) {
                         return <Component {...data}>{children}</Component>;
                     }

@@ -52,7 +52,7 @@ export default function ActionItem(props) {
                 variant: itemType,
                 bg: "brand.400",
                 color: "white",
-                _hover: { bg: "brand.200" },
+                _hover: { bg: "brand.300" },
             };
         }
         return {};
