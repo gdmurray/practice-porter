@@ -1,10 +1,10 @@
+import React from "react";
 import { Box } from "@chakra-ui/react";
 import { navigate } from "gatsby";
 
-export default function Logo(props) {
+export default function Logo() {
     return (
         <Box
-            {...props}
             w={[150, 200, 250]}
             cursor={"pointer"}
             onClick={() => {

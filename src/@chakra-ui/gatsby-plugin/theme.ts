@@ -1,4 +1,4 @@
-import { extendTheme } from "@chakra-ui/react";
+import { extendTheme, ThemeConfig } from "@chakra-ui/react";
 
 // Define the color values
 const brandColors = {
@@ -27,7 +27,14 @@ const brandScale = {
     900: "#005D67",
 };
 
+export const config: ThemeConfig = {
+    initialColorMode: "system",
+    useSystemColorMode: true,
+};
+
 const theme = {
+    config,
+    useSystemColorMode: true,
     colors: {
         primary: "#059AAB",
         brand: brandScale,

@@ -1,9 +1,5 @@
 import React from "react";
 import { Box } from "@chakra-ui/react";
-import {
-    FooterComponentFragment,
-    HeaderComponentFragment,
-} from "@/graphql/generated";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 
@@ -12,8 +8,8 @@ export const Layout = ({
     header,
     footer,
 }: React.PropsWithChildren & {
-    header: HeaderComponentFragment;
-    footer: FooterComponentFragment;
+    header: Queries.HeaderComponentFragment;
+    footer: Queries.FooterComponentFragment;
 }) => {
     return (
         <>

@@ -3,20 +3,22 @@ import { graphql } from "gatsby";
 import { Flex, Heading, Stack, Text } from "@chakra-ui/react";
 import { ContentfulComponentFeatureBlock } from "@/components/sections";
 import { RichText } from "@/components/RichText";
-// import { CtaComponentFragment } from "@/graphql/generated";
+import { debugProps } from "@/modules/debug";
 
 // direction = Column.. Stacked
 // Direction = Row... columns? lol
+
+type CTAProps = Queries.CTAComponentFragment;
 
 enum FeaturesOrientation {
     VERTICAL = "Vertical",
     HORIZONTAL = "Horizontal",
 }
 
-export default function CTA(props) {
-    console.log("CTA Props: ", props);
+export default function CTA(props: CTAProps) {
+    debugProps("CTA", props);
 
-    function getStackProps(props) {
+    function getStackProps(props: CTAProps) {
         if (props.align === "Center") {
             return {
                 alignSelf: "center",
@@ -36,14 +38,14 @@ export default function CTA(props) {
         }
     }
 
-    function getAdditionalStyles(props) {
+    function getAdditionalStyles(props: CTAProps) {
         if (props.styles && props.styles.internal.content) {
             return JSON.parse(props.styles.internal.content);
         }
         return {};
     }
 
-    function getParentFlexProps(props) {
+    function getParentFlexProps(props: CTAProps) {
         if (props.background) {
             return {
                 background: props.background,
@@ -64,7 +66,6 @@ export default function CTA(props) {
                 {...getStackProps(props)}
                 {...getAdditionalStyles(props)}
                 alignSelf={"center"}
-                // textAlign={"center"}
                 gap={8}
                 {...(props.anchor != null ? { id: props.anchor } : {})}
             >
@@ -95,8 +96,8 @@ export default function CTA(props) {
                         {props.features.map((elem) => {
                             return (
                                 <ContentfulComponentFeatureBlock
-                                    key={elem.id}
-                                    {...elem}
+                                    key={elem?.id ?? ""}
+                                    {...(elem as Queries.ContentfulComponentFeatureBlock)}
                                 />
                             );
                         })}
@@ -105,7 +106,9 @@ export default function CTA(props) {
                 {props.content && (
                     <div
                         style={{
-                            textAlign: props.alignContentText ?? "inherit",
+                            textAlign:
+                                (props.alignContentText as CanvasTextAlign) ??
+                                "inherit",
                         }}
                     >
                         <RichText {...props.content} />
@@ -118,6 +121,7 @@ export default function CTA(props) {
 
 export const query = graphql`
     fragment CTAComponent on ContentfulComponentCta {
+        id
         title
         description {
             description

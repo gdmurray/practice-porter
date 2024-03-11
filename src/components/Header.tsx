@@ -1,10 +1,20 @@
 import React from "react";
-import { Box, Button, Flex, Text, useTheme } from "@chakra-ui/react";
+import { Box, Flex, Text, useTheme } from "@chakra-ui/react";
 import { graphql, Link } from "gatsby";
 import Logo from "./Logo";
 import ActionItem from "@/components/ActionItem";
+import { debugProps } from "@/modules/debug";
 
-const MenuItem = ({ children, isLast, to = "/", ...rest }) => {
+const MenuItem = ({
+    children,
+    isLast,
+    to = "/",
+    ...rest
+}: {
+    children: React.ReactNode;
+    isLast: boolean;
+    to: string | null;
+} & { [key: string]: any }) => {
     const theme = useTheme();
     return (
         <Text
@@ -16,7 +26,7 @@ const MenuItem = ({ children, isLast, to = "/", ...rest }) => {
             display="block"
             {...rest}
         >
-            <Link to={to}>{children}</Link>
+            <Link to={to ?? ""}>{children}</Link>
         </Text>
     );
 };
@@ -49,8 +59,9 @@ const MenuIcon = () => {
     );
 };
 
-const Header = (props) => {
-    console.log("Header Props: ", props);
+type HeaderProps = Queries.HeaderComponentFragment;
+const Header = (props: HeaderProps) => {
+    debugProps("Header", props);
     const [show, setShow] = React.useState(false);
     const toggleMenu = () => setShow(!show);
     const theme = useTheme();
@@ -70,9 +81,7 @@ const Header = (props) => {
             {...props}
         >
             <Flex align="center">
-                <Logo
-                // color={["white", "white", "primary.500", "primary.500"]}
-                />
+                <Logo />
             </Flex>
 
             <Box
@@ -102,10 +111,10 @@ const Header = (props) => {
                         props.links.map((elem) => (
                             <MenuItem
                                 isLast={false}
-                                key={elem.title}
-                                to={elem.link}
+                                key={elem?.title ?? ""}
+                                to={elem?.link ?? "/"}
                             >
-                                {elem.title}
+                                {elem?.title}
                             </MenuItem>
                         ))}
                     <Box
@@ -115,7 +124,6 @@ const Header = (props) => {
                         mr={8}
                     />
                     {props.cta && <ActionItem {...props.cta} />}
-                    {/* <MenuItem to="/">Coming Soon</MenuItem> */}
                 </Flex>
             </Box>
         </Flex>

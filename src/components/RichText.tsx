@@ -1,12 +1,10 @@
-// eslint-disable-next-line @typescript-eslint/no-unused-vars,no-unused-vars
 import React from "react";
 import {
-    ContentfulRichTextGatsbyReference,
-    renderRichText,
-    RenderRichTextData,
-} from "gatsby-source-contentful/rich-text";
-import { BLOCKS, MARKS, INLINES } from "@contentful/rich-text-types";
-// import { Options } from "@contentful/rich-text-html-renderer";
+    BLOCKS,
+    MARKS,
+    INLINES,
+    Text as ContentfulText,
+} from "@contentful/rich-text-types";
 import {
     documentToReactComponents,
     Options,
@@ -24,10 +22,14 @@ import {
 } from "@chakra-ui/react";
 
 import * as Components from "./sections";
+import { debugProps } from "@/modules/debug";
 
 const defaultNodeRenderers: RenderNode = {
     [BLOCKS.PARAGRAPH]: (node, children) => {
-        if (children.length === 1 && children[0] === "") {
+        if (
+            typeof children !== "string" ||
+            (children?.length === 1 && children[0] === "")
+        ) {
             return <Text mb={4}>&nbsp;</Text>;
         }
         return <Text mb={4}>{children}</Text>;
@@ -85,17 +87,16 @@ const defaultNodeRenderers: RenderNode = {
         const { uri } = node.data;
         return (
             <Link href={uri} color="blue.500" isExternal>
-                {node.content[0].value}
+                {(node.content[0] as ContentfulText).value}
             </Link>
         );
     },
 };
 
-export const RichText = (text: { raw: any; references: any[] }) => {
-    console.log("Rich Text: ", text);
+export function RichText(text: { raw: any; references: any }) {
     const { raw, references } = text;
     const referenceMap = new Map();
-    references?.forEach((elem) => {
+    references?.forEach((elem: any) => {
         referenceMap.set(elem.contentful_id, elem);
     });
 
@@ -103,7 +104,7 @@ export const RichText = (text: { raw: any; references: any[] }) => {
         return <>Empty Text.</>;
     }
 
-    console.log(referenceMap);
+    debugProps("RichText", [raw, references, referenceMap]);
 
     const options: Options = {
         renderMark: {
@@ -114,15 +115,17 @@ export const RichText = (text: { raw: any; references: any[] }) => {
         renderNode: {
             ...defaultNodeRenderers,
             [BLOCKS.EMBEDDED_ENTRY]: (node, children) => {
-                console.log("node...: ", node);
                 const id = node.data.target.sys.id;
                 if (referenceMap.has(id)) {
                     const data = referenceMap.get(id);
                     const { type: componentType } = data.internal;
-                    const Component = Components[componentType] || (
-                        <div>Not Found</div>
-                    );
-                    if (children && children.length > 0) {
+                    const Component = Components[
+                        componentType as keyof typeof Components
+                    ] || <div>Not Found</div>;
+                    if (
+                        children &&
+                        (children as React.ReactNode[]).length > 0
+                    ) {
                         return <Component {...data}>{children}</Component>;
                     }
                     return <Component {...data} />;
@@ -133,9 +136,9 @@ export const RichText = (text: { raw: any; references: any[] }) => {
     };
 
     try {
-        return documentToReactComponents(JSON.parse(raw), options);
+        return documentToReactComponents(JSON.parse(raw as string), options);
     } catch (err) {
         console.error("Error Rendering Rich Text: ", err);
         return <></>;
     }
-};
+}

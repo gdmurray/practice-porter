@@ -20,7 +20,8 @@ const alignSelfMap = {
     [ButtonAlign.RIGHT]: "flex-end",
 };
 
-export default function ActionItem(props) {
+type ActionItemProps = Queries.ActionItemComponentFragment;
+export default function ActionItem(props: ActionItemProps) {
     const icon =
         props.icon != null
             ? props.iconPosition === IconPosition.LEFT
@@ -30,15 +31,15 @@ export default function ActionItem(props) {
                 : { rightIcon: <LazyIcon iconName={props.icon} /> }
             : {};
 
-    const scrollToDiv = (divId) => {
+    const scrollToDiv = (divId: string) => {
         const divElement = document.getElementById(divId.replace("#", ""));
-        divElement.scrollIntoView({ behavior: "smooth" });
+        if (divElement != null) {
+            divElement.scrollIntoView({ behavior: "smooth" });
+        }
     };
 
-    console.log("ACtion Props: ", props);
-
-    function getButtonProps(props) {
-        const itemType = props.itemType.toLowerCase();
+    function getButtonProps(props: ActionItemProps) {
+        const itemType = props.itemType?.toLowerCase();
         if (itemType === "outline") {
             return {
                 variant: itemType,
@@ -58,13 +59,12 @@ export default function ActionItem(props) {
         return {};
     }
 
-    function getAdditionalStyles(props) {
+    function getAdditionalStyles(props: ActionItemProps) {
         if (props.styles && props.styles.internal.content) {
             return JSON.parse(props.styles.internal.content);
         }
         return {};
     }
-    console.log(props.itemType);
     return (
         <Button
             {...getButtonProps(props)}
@@ -73,16 +73,21 @@ export default function ActionItem(props) {
                 props.link != null
                     ? props.link.startsWith("#")
                         ? () => {
-                              scrollToDiv(props.link);
+                              scrollToDiv(props.link ?? "");
                           }
                         : () => {
-                              navigate(props.link);
+                              navigate(props.link ?? "");
                           }
                     : undefined
             }
             {...(props.width != null ? { maxW: props.width, w: "100%" } : {})}
             {...(props.width != null && props.align != null
-                ? { alignSelf: alignSelfMap[props.align] }
+                ? {
+                      alignSelf:
+                          alignSelfMap[
+                              props.align as keyof typeof alignSelfMap
+                          ],
+                  }
                 : {})}
             {...icon}
         >

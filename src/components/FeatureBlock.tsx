@@ -5,21 +5,20 @@ import { LazyIcon } from "@/components/LazyIcon";
 // import { FeatureBlockComponentFragment } from "@/graphql/generated";
 import { TablerIconsProps } from "@tabler/icons-react";
 import { Asset } from "@/components/Asset";
+import { debugProps } from "@/modules/debug";
 
 enum FeatureBlockLayout {
     VERTICAL = "Vertical",
     HORIZONTAL = "Horizontal",
 }
 
-// TODO: Implement Image Icon
-
-export default function FeatureBlock(props) {
-    console.log("Feature Props: ", props);
+type FeatureBlockProps = Queries.FeatureBlockComponentFragment;
+export default function FeatureBlock(props: FeatureBlockProps) {
+    debugProps("FeatureBlock", props);
     const iconHeight = props.iconAttributes?.size || 24;
-    console.log("Icon Height: ", iconHeight);
     const boxHeight = iconHeight + iconHeight * 0.25;
 
-    function getIconBackgroundProps(props) {
+    function getIconBackgroundProps(props: FeatureBlockProps) {
         if (props.iconBackground) {
             return {
                 borderRadius: `${boxHeight}px`,
@@ -29,7 +28,7 @@ export default function FeatureBlock(props) {
         return {};
     }
 
-    function getFeatureImage(props) {
+    function getFeatureImage(props: FeatureBlockProps) {
         if (props.icon != null) {
             return (
                 <Box

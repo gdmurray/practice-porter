@@ -14,6 +14,7 @@ import {
 } from "@chakra-ui/react";
 
 import { LazyIcon } from "@/components/LazyIcon";
+import { debugProps } from "@/modules/debug";
 
 // Utility function to convert hex to RGB
 function hexToRgb(hex: string) {
@@ -24,21 +25,27 @@ function hexToRgb(hex: string) {
     return { r, g, b };
 }
 
-export default function Footer(props) {
+type FooterProps = Queries.FooterComponentFragment;
+export default function Footer(props: FooterProps) {
+    debugProps("Footer", props);
     const theme = useTheme();
     const brand500 = theme.colors.brand[500];
     const rgb = hexToRgb(brand500); // Convert hex to RGB
     const hoverBgColor = `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, 0.3)`; // 20% opacity
-    console.log("Footer Props: ", props);
-    const linksBySection = props.links.reduce((acc, elem) => {
-        if (elem.section in acc) {
-            acc[elem.section].push(elem);
-        } else {
-            acc[elem.section] = [elem];
-        }
-        return acc;
-    }, {});
-    console.log(props.socialMediaLinks);
+    const linksBySection = props.links?.reduce<Record<string, any>>(
+        (acc, elem) => {
+            if (elem != null && elem.section != null) {
+                if (elem.section in acc) {
+                    acc[elem.section as keyof typeof acc].push(elem);
+                } else {
+                    acc[elem?.section] = [elem];
+                }
+            }
+            return acc;
+        },
+        {},
+    );
+
     return (
         <Box bg={"brand.900"}>
             <Container as={"footer"} w={"100%"} maxW={"7xl"}>
@@ -48,14 +55,14 @@ export default function Footer(props) {
                     paddingBottom={{ base: 8, sm: 12 }}
                 >
                     <Stack>
-                        <Image src={props.logo.file.url} />
+                        <Image src={props.logo?.file?.url ?? ""} />
                         <Text color="fgAccent.muted">{props.description}</Text>
                     </Stack>
                     <Grid
                         gap={8}
-                        templateColumns={`repeat(4, minmax(0px, 1fr));`}
+                        templateColumns={`repeat(${props.sectionOrder?.length}, minmax(0px, 1fr));`}
                     >
-                        {props.sectionOrder.map((section) => (
+                        {props.sectionOrder?.map((section) => (
                             <Stack key={section} gap={4} pt={4}>
                                 <Text
                                     fontSize={"sm"}
@@ -65,22 +72,28 @@ export default function Footer(props) {
                                     {section}
                                 </Text>
 
-                                {section in linksBySection && (
-                                    <Stack gap={2}>
-                                        {linksBySection[section].map((elem) => (
-                                            <Box
-                                                fontSize={"sm"}
-                                                fontWeight={"600"}
-                                                color={"fgAccent.default"}
-                                                key={elem.title}
-                                                as="a"
-                                                href={elem.link}
-                                            >
-                                                {elem.title}
-                                            </Box>
-                                        ))}
-                                    </Stack>
-                                )}
+                                {linksBySection &&
+                                    section &&
+                                    section in linksBySection && (
+                                        <Stack gap={2}>
+                                            {linksBySection[section].map(
+                                                (elem: any) => (
+                                                    <Box
+                                                        fontSize={"sm"}
+                                                        fontWeight={"600"}
+                                                        color={
+                                                            "fgAccent.default"
+                                                        }
+                                                        key={elem.title}
+                                                        as="a"
+                                                        href={elem.link}
+                                                    >
+                                                        {elem.title}
+                                                    </Box>
+                                                ),
+                                            )}
+                                        </Stack>
+                                    )}
                             </Stack>
                         ))}
                     </Grid>
@@ -107,15 +120,19 @@ export default function Footer(props) {
                                             backgroundColor: hoverBgColor,
                                         }}
                                         as={"a"}
-                                        href={elem.link}
-                                        {...(elem.opensInNewTab
+                                        href={elem?.link ?? ""}
+                                        {...(elem?.opensInNewTab
                                             ? { target: "_blank" }
                                             : {})}
                                         cursor={"pointer"}
-                                        key={elem.title}
-                                        aria-label={elem.title}
+                                        key={elem?.title}
+                                        aria-label={elem?.title ?? ""}
                                         color={"fgAccent.default"}
-                                        icon={<LazyIcon iconName={elem.icon} />}
+                                        icon={
+                                            <LazyIcon
+                                                iconName={elem?.icon ?? ""}
+                                            />
+                                        }
                                     />
                                 ))}
                             </ButtonGroup>
@@ -143,6 +160,7 @@ export const query = graphql`
         disclaimer
         sectionOrder
         socialMediaLinks {
+            title
             icon
             link
             opensInNewTab

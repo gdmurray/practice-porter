@@ -1,18 +1,32 @@
 import { Image } from "@chakra-ui/react";
 import { graphql } from "gatsby";
+import React from "react";
 
-export const Asset = ({ props, contentProps }) => {
-    if (props.file.contentType.startsWith("video")) {
+export const Asset = ({
+    props,
+    contentProps,
+}: {
+    props: Queries.AssetComponentFragment;
+    contentProps: React.ComponentProps<typeof Image>;
+}) => {
+    if (props.file?.contentType?.startsWith("video")) {
         return (
             <video autoPlay muted height={480} loop>
-                <source src={props.file.url} type={props.file.contentType} />
+                <source
+                    src={props.file?.url ?? ""}
+                    type={props.file.contentType}
+                />
             </video>
         );
     }
 
-    if (props.file.contentType.startsWith("image")) {
+    if (props.file?.contentType?.startsWith("image")) {
         return (
-            <Image alt={props.title} src={props.file.url} {...contentProps} />
+            <Image
+                alt={props.title ?? "Image"}
+                src={props.file.url ?? ""}
+                {...contentProps}
+            />
         );
     }
 };

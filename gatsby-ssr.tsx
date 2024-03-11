@@ -1,7 +1,12 @@
-// eslint-disable-next-line @typescript-eslint/no-unused-vars,no-unused-vars
-import * as React from "react";
+import React from "react";
+import { RenderBodyArgs } from "gatsby";
+import { ColorModeScript } from "@chakra-ui/react";
+import theme from "./src/@chakra-ui/gatsby-plugin/theme";
 
-export const onRenderBody = ({ setHeadComponents }) => {
+export const onRenderBody = ({
+    setHeadComponents,
+    setPreBodyComponents,
+}: RenderBodyArgs) => {
     setHeadComponents([
         <link
             rel="preload"
@@ -11,11 +16,11 @@ export const onRenderBody = ({ setHeadComponents }) => {
             crossOrigin="anonymous"
             key="generalSansFont"
         />,
-        <link
-            rel={"icon"}
-            href={"/favicon-light.png"}
-            type={"image/png"}
-            key={"favicon"}
+    ]);
+    setPreBodyComponents([
+        <ColorModeScript
+            key={"colormode"}
+            initialColorMode={theme.config.initialColorMode}
         />,
     ]);
 };

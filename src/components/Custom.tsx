@@ -9,9 +9,9 @@ const customComponents = {
 };
 
 export const CustomComponent = ({ name }: { name: string }) => {
-    console.log("Custom Component Name: ", name);
     const Component =
-        customComponents[name] || (() => <div>Component not found</div>);
+        customComponents[name as keyof typeof customComponents] ||
+        (() => <div>Component not found</div>);
     return <Component />;
 };
 
@@ -19,6 +19,7 @@ export default CustomComponent;
 
 export const query = graphql`
     fragment CustomComponent on ContentfulCustomComponent {
+        id
         name
     }
 `;

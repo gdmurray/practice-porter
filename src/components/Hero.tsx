@@ -1,17 +1,16 @@
 import { graphql } from "gatsby";
+import React from "react";
 import {
-    Container,
     Flex,
     Heading,
     Stack,
     Text,
     useBreakpointValue,
-    Button,
-    Image,
     VStack,
 } from "@chakra-ui/react";
 import { RichText } from "@/components/RichText";
 import { Asset } from "@/components/Asset";
+import { debugProps } from "@/modules/debug";
 
 enum HeroImageLocation {
     LEFT = "Left",
@@ -21,7 +20,8 @@ enum HeroImageLocation {
     TOP = "Top",
 }
 
-function getFlexDirection(imageLocation) {
+type HeroProps = Queries.HeroComponentFragment;
+function getFlexDirection(imageLocation: HeroImageLocation) {
     if (imageLocation === HeroImageLocation.TOP) {
         return "column-reverse";
     }
@@ -36,15 +36,18 @@ function getFlexDirection(imageLocation) {
     }
 }
 
-export default function Hero(props) {
-    console.log("HERO PROPS: ", props);
+export default function Hero(props: HeroProps) {
+    debugProps("Hero", props);
     const imageLocation = props.imageLocation;
+
+    const paddingX = useBreakpointValue({ base: 4, md: 8 });
+    const fontSize = useBreakpointValue({ base: "3xl", md: "4xl" });
     if (imageLocation === HeroImageLocation.BACKGROUND) {
         return (
             <Flex
                 w={"full"}
                 h={"100vh"}
-                backgroundImage={`url(${props.image.file.url})`}
+                backgroundImage={`url(${props.image?.file?.url})`}
                 backgroundSize={"cover"}
                 backgroundPosition={"center center"}
                 {...(props.anchor != null ? { id: props.anchor } : {})}
@@ -52,7 +55,7 @@ export default function Hero(props) {
                 <VStack
                     w={"full"}
                     justify={"center"}
-                    px={useBreakpointValue({ base: 4, md: 8 })}
+                    px={paddingX}
                     bgGradient={"linear(to-r, blackAlpha.600, transparent)"}
                 >
                     <Stack maxW={"2xl"} align={"center"} spacing={6}>
@@ -61,32 +64,11 @@ export default function Hero(props) {
                             align={"center"}
                             fontWeight={700}
                             lineHeight={1.2}
-                            fontSize={useBreakpointValue({
-                                base: "3xl",
-                                md: "4xl",
-                            })}
+                            fontSize={fontSize}
                         >
                             {props.title}
                         </Text>
-                        <RichText {...props.content} />
-                        {/* <Stack direction={"row"}> */}
-                        {/*    <Button */}
-                        {/*        bg={"blue.400"} */}
-                        {/*        rounded={"full"} */}
-                        {/*        color={"white"} */}
-                        {/*        _hover={{ bg: "blue.500" }} */}
-                        {/*    > */}
-                        {/*        Show me more */}
-                        {/*    </Button> */}
-                        {/*    <Button */}
-                        {/*        bg={"whiteAlpha.300"} */}
-                        {/*        rounded={"full"} */}
-                        {/*        color={"white"} */}
-                        {/*        _hover={{ bg: "whiteAlpha.500" }} */}
-                        {/*    > */}
-                        {/*        Show me more */}
-                        {/*    </Button> */}
-                        {/* </Stack> */}
+                        <RichText {...(props.content as unknown as any)} />
                     </Stack>
                 </VStack>
             </Flex>
@@ -98,7 +80,7 @@ export default function Hero(props) {
             minH={"100vh"}
             direction={{
                 base: "column",
-                md: getFlexDirection(imageLocation),
+                md: getFlexDirection(imageLocation as HeroImageLocation),
             }}
             {...(props.anchor != null ? { id: props.anchor } : {})}
         >
@@ -114,36 +96,12 @@ export default function Hero(props) {
                     >
                         {props.title}
                     </Heading>
-                    <RichText {...props.content} />
-                    {/* <Text */}
-                    {/*    fontSize={{ base: "md", lg: "lg" }} */}
-                    {/*    color={"gray.500"} */}
-                    {/* > */}
-                    {/*    The project board is an exclusive resource for contract */}
-                    {/*    work. It&apos;s perfect for freelancers, agencies, and */}
-                    {/*    moonlighters. */}
-                    {/* </Text> */}
-                    {/* <Stack */}
-                    {/*    direction={{ base: "column", md: "row" }} */}
-                    {/*    spacing={4} */}
-                    {/* > */}
-                    {/*    <Button */}
-                    {/*        rounded={"full"} */}
-                    {/*        bg={"blue.400"} */}
-                    {/*        color={"white"} */}
-                    {/*        _hover={{ */}
-                    {/*            bg: "blue.500", */}
-                    {/*        }} */}
-                    {/*    > */}
-                    {/*        Create Project */}
-                    {/*    </Button> */}
-                    {/*    <Button rounded={"full"}>How It Works</Button> */}
-                    {/* </Stack> */}
+                    <RichText {...(props.content as unknown as any)} />
                 </Stack>
             </Flex>
             <Flex flex={1}>
                 <Asset
-                    props={props.image}
+                    props={props.image as Queries.AssetComponentFragment}
                     contentProps={{ objectFit: "cover" }}
                 />
             </Flex>
@@ -153,6 +111,7 @@ export default function Hero(props) {
 
 export const query = graphql`
     fragment HeroComponent on ContentfulComponentHero {
+        id
         title
         content {
             raw
@@ -168,5 +127,6 @@ export const query = graphql`
             ...AssetComponent
         }
         imageLocation
+        anchor
     }
 `;

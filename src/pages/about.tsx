@@ -8,9 +8,10 @@ const AboutPage: React.FC<PageProps> = ({ data }) => {
 };
 
 export default AboutPage;
-// export const Head: HeadFC = ({ data }) => {
-//     return <SEOHead data={data} />;
-// };
+
+export const Head: HeadFC = ({ data }) => {
+    return <SEOHead data={data} />;
+};
 
 export const query = graphql`
     query {
