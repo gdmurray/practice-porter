@@ -5,9 +5,19 @@ import { Layout } from "@/components/Layout";
 import * as sections from "../components/sections";
 import { Page } from "@/components/Page";
 import { SEOHead } from "@/components/SeoMetadata";
+import styled from "@emotion/styled";
 
+const OverrideDiv = styled.div`
+    .duplex p {
+        font-size: 18px;
+    }
+`;
 const FeaturesPage: React.FC<PageProps> = ({ data }) => {
-    return <Page data={data} />;
+    return (
+        <OverrideDiv>
+            <Page data={data} />
+        </OverrideDiv>
+    );
 };
 
 export default FeaturesPage;

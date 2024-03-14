@@ -27,10 +27,23 @@ import { debugProps } from "@/modules/debug";
 const defaultNodeRenderers: RenderNode = {
     [BLOCKS.PARAGRAPH]: (node, children) => {
         if (
-            typeof children !== "string" ||
-            (children?.length === 1 && children[0] === "")
+            typeof children === "string" ||
+            ((children as React.ReactNode[]).length === 1 &&
+                (children as React.ReactNode[])[0] === "")
         ) {
             return <Text mb={4}>&nbsp;</Text>;
+        }
+        if (children == null) return <></>;
+        // @ts-ignore
+        if (typeof children[0] === "object") {
+            if (
+                // @ts-ignore
+                children[0].props.children === "\n" ||
+                // @ts-ignore
+                children[0].props.children.trim() === ""
+            ) {
+                return <br />;
+            }
         }
         return <Text mb={4}>{children}</Text>;
     },

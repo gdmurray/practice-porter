@@ -43,22 +43,60 @@ export default function Hero(props: HeroProps) {
     const paddingX = useBreakpointValue({ base: 4, md: 8 });
     const fontSize = useBreakpointValue({ base: "3xl", md: "4xl" });
     if (imageLocation === HeroImageLocation.BACKGROUND) {
+        const isBackgroundVideo =
+            props.image?.file?.contentType?.startsWith("video");
         return (
             <Flex
+                className={"hero"}
                 w={"full"}
                 h={"100vh"}
-                backgroundImage={`url(${props.image?.file?.url})`}
-                backgroundSize={"cover"}
-                backgroundPosition={"center center"}
+                position="relative"
                 {...(props.anchor != null ? { id: props.anchor } : {})}
             >
+                {isBackgroundVideo ? (
+                    <video
+                        autoPlay
+                        loop
+                        muted
+                        playsInline
+                        style={{
+                            position: "absolute",
+                            width: "100%",
+                            height: "100%",
+                            objectFit: "cover",
+                        }}
+                    >
+                        <source
+                            src={props.image?.file?.url ?? ""}
+                            type="video/mp4"
+                        />
+                        Your browser does not support the video tag.
+                    </video>
+                ) : (
+                    <Flex
+                        w={"full"}
+                        h={"100vh"}
+                        backgroundImage={`url(${props?.image?.file?.url})`}
+                        backgroundSize={"cover"}
+                        backgroundPosition={"center center"}
+                    />
+                )}
                 <VStack
                     w={"full"}
+                    h={"100vh"}
+                    position="absolute"
+                    top="0"
+                    left="0"
                     justify={"center"}
                     px={paddingX}
-                    bgGradient={"linear(to-r, blackAlpha.600, transparent)"}
+                    bgGradient={"linear(to-r, blackAlpha.800, blackAlpha.300)"}
                 >
-                    <Stack maxW={"2xl"} align={"center"} spacing={6}>
+                    <Stack
+                        maxW={"2xl"}
+                        align={"center"}
+                        spacing={6}
+                        {...(isBackgroundVideo ? { color: "white" } : {})}
+                    >
                         <Text
                             color={"white"}
                             align={"center"}
@@ -77,6 +115,7 @@ export default function Hero(props: HeroProps) {
 
     return (
         <Stack
+            className={"hero"}
             minH={"100vh"}
             direction={{
                 base: "column",

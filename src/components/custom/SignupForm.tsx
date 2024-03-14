@@ -73,7 +73,7 @@ const FormContent = () => {
         formState: { errors, isSubmitting, isSubmitSuccessful },
     } = useForm<SignupFormInput>();
 
-    async function onSubmit(values) {
+    async function onSubmit(values: SignupFormInput) {
         return await window
             .fetch(`/api/join-mailing-list`, {
                 method: `POST`,
@@ -190,7 +190,11 @@ const FormContent = () => {
                                     key={`patients-${index}`}
                                     value={option}
                                 >
-                                    {selectOptions[option]}
+                                    {
+                                        selectOptions[
+                                            option as keyof typeof selectOptions
+                                        ]
+                                    }
                                 </option>
                             ))}
                         </Select>
@@ -235,7 +239,8 @@ export const SignupForm = () => {
             mr={"auto"}
             ml={"auto"}
             shadow={theme.shadows.md}
-            borderColor={"border.default"}
+            borderColor={"border.emphasized"}
+            borderWidth={"1px"}
         >
             <FormContent />
         </Box>

@@ -7,12 +7,14 @@ import { TablerIconsProps } from "@tabler/icons-react";
 import { Asset } from "@/components/Asset";
 import { debugProps } from "@/modules/debug";
 
-enum FeatureBlockLayout {
+export enum FeatureBlockLayout {
     VERTICAL = "Vertical",
     HORIZONTAL = "Horizontal",
 }
 
-type FeatureBlockProps = Queries.FeatureBlockComponentFragment;
+type FeatureBlockProps = Queries.FeatureBlockComponentFragment & {
+    overrideFeatureOrientation?: FeatureBlockLayout | null;
+};
 export default function FeatureBlock(props: FeatureBlockProps) {
     debugProps("FeatureBlock", props);
     const iconHeight = props.iconAttributes?.size || 24;
@@ -27,6 +29,11 @@ export default function FeatureBlock(props: FeatureBlockProps) {
         }
         return {};
     }
+
+    const featureBlockOrientation =
+        props.overrideFeatureOrientation != null
+            ? props.overrideFeatureOrientation
+            : props.layout;
 
     function getFeatureImage(props: FeatureBlockProps) {
         if (props.icon != null) {
@@ -59,10 +66,12 @@ export default function FeatureBlock(props: FeatureBlockProps) {
     return (
         <Stack
             direction={
-                props.layout === FeatureBlockLayout.VERTICAL ? "column" : "row"
+                featureBlockOrientation === FeatureBlockLayout.VERTICAL
+                    ? "column"
+                    : "row"
             }
             alignItems={
-                props.layout === FeatureBlockLayout.VERTICAL
+                featureBlockOrientation === FeatureBlockLayout.VERTICAL
                     ? "center"
                     : "flex-start"
             }

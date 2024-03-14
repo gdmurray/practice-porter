@@ -27,14 +27,12 @@ const brandScale = {
     900: "#005D67",
 };
 
-export const config: ThemeConfig = {
-    initialColorMode: "system",
-    useSystemColorMode: true,
-};
+// export const config = {
+//     initialColorMode: "system",
+//     useSystemColorMode: true,
+// };
 
 const theme = {
-    config,
-    useSystemColorMode: true,
     colors: {
         primary: "#059AAB",
         brand: brandScale,
@@ -74,7 +72,7 @@ const theme = {
     styles: {
         global: {
             body: {
-                bg: "#FBF6F2",
+                bg: "white",
                 color: "#181716",
             },
             subtle: {

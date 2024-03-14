@@ -5,25 +5,25 @@ import * as sections from "@/components/sections";
 import { debugProps } from "@/modules/debug";
 
 export const Page = ({ data }: { data: any }) => {
-    const { colorMode } = useColorMode();
+    // const { colorMode } = useColorMode();
     debugProps("Page", data);
 
-    useEffect(() => {
-        // Function to change the favicon
-        const changeFavicon = (mode: string) => {
-            const faviconLink: HTMLAnchorElement | null =
-                document.querySelector("link[rel*='icon']");
-            if (faviconLink) {
-                faviconLink.href =
-                    mode === "dark"
-                        ? "/favicon-dark.png"
-                        : "/favicon-light.png";
-            }
-        };
-
-        // Change the favicon when the color mode changes
-        changeFavicon(colorMode);
-    }, [colorMode]); // Only re-run the effect if colorMode changes
+    // useEffect(() => {
+    //     // Function to change the favicon
+    //     const changeFavicon = (mode: string) => {
+    //         const faviconLink: HTMLAnchorElement | null =
+    //             document.querySelector("link[rel*='icon']");
+    //         if (faviconLink) {
+    //             faviconLink.href =
+    //                 mode === "dark"
+    //                     ? "/favicon-dark.png"
+    //                     : "/favicon-light.png";
+    //         }
+    //     };
+    //
+    //     // Change the favicon when the color mode changes
+    //     changeFavicon(colorMode);
+    // }, [colorMode]); // Only re-run the effect if colorMode changes
 
     const { body, header, footer } =
         data.contentfulPage as Queries.ContentfulPage;

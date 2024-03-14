@@ -45,7 +45,7 @@ export const ContactForm = () => {
             alignSelf={"center"}
             w={"99vw"}
             justifyContent={"center"}
-            id={"#contact"}
+            id={"contact"}
             py={16}
         >
             <Stack

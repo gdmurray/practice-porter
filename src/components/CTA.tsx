@@ -1,9 +1,19 @@
 import React from "react";
 import { graphql } from "gatsby";
-import { Flex, Heading, Stack, Text } from "@chakra-ui/react";
+import {
+    Flex,
+    Heading,
+    Stack,
+    Text,
+    useBreakpointValue,
+} from "@chakra-ui/react";
 import { ContentfulComponentFeatureBlock } from "@/components/sections";
 import { RichText } from "@/components/RichText";
 import { debugProps } from "@/modules/debug";
+import { FeatureBlockLayout } from "@/components/FeatureBlock";
+import { useInView } from "react-intersection-observer";
+import { motion } from "framer-motion";
+import { TypingAnimation } from "@/components/TypingAnimation";
 
 // direction = Column.. Stacked
 // Direction = Row... columns? lol
@@ -15,8 +25,61 @@ enum FeaturesOrientation {
     HORIZONTAL = "Horizontal",
 }
 
+enum FeaturesAnimation {
+    SLIDE_IN = "Slide In",
+    SLIDE_UP = "Slide Up",
+}
+
+const MotionStack = motion(Stack);
+
 export default function CTA(props: CTAProps) {
     debugProps("CTA", props);
+
+    const { ref, inView } = useInView({
+        triggerOnce: true,
+        threshold: 0.5,
+    });
+
+    const overrideFeatureOrientation: FeatureBlockLayout | null | undefined =
+        useBreakpointValue({
+            base: FeatureBlockLayout.HORIZONTAL,
+            md: null,
+        });
+
+    function getFeatureAnimationProps() {
+        const slideUpProps = {
+            initial: "hidden",
+            animate: inView ? "visible" : "hidden",
+            variants: {
+                hidden: { opacity: 0, y: 75 }, // Start below their final position
+                visible: {
+                    opacity: 1,
+                    y: 0,
+                    transition: { duration: 0.5 },
+                },
+            },
+        };
+
+        const slideInProps = {
+            initial: "hidden",
+            animate: inView ? "visible" : "hidden",
+            variants: {
+                hidden: { opacity: 0, x: -100 },
+                visible: {
+                    opacity: 1,
+                    x: 0,
+                    transition: { duration: 0.5 },
+                },
+            },
+        };
+        if (props.featuresAnimation === FeaturesAnimation.SLIDE_UP) {
+            return slideUpProps;
+        }
+        if (props.featuresAnimation === FeaturesAnimation.SLIDE_IN) {
+            return slideInProps;
+        }
+        return {};
+    }
 
     function getStackProps(props: CTAProps) {
         if (props.align === "Center") {
@@ -58,7 +121,12 @@ export default function CTA(props: CTAProps) {
     }
 
     return (
-        <Flex alignSelf={"center"} {...getParentFlexProps(props)}>
+        <Flex
+            ref={ref}
+            alignSelf={"center"}
+            className={"cta"}
+            {...getParentFlexProps(props)}
+        >
             <Stack
                 p={8}
                 maxW={"6xl"}
@@ -70,7 +138,16 @@ export default function CTA(props: CTAProps) {
                 {...(props.anchor != null ? { id: props.anchor } : {})}
             >
                 <Stack gap={8}>
-                    <Heading as={"h2"}>{props.title}</Heading>
+                    <Heading as={"h2"}>
+                        {props.titleAnimation === "Type" ? (
+                            <TypingAnimation
+                                title={props.title ?? ""}
+                                typingSpeed={50}
+                            />
+                        ) : (
+                            <>{props.title}</>
+                        )}
+                    </Heading>
                     {props.description && props.description.description && (
                         <Text fontSize={"xl"} variant={"secondary"}>
                             {props.description.description}
@@ -78,13 +155,15 @@ export default function CTA(props: CTAProps) {
                     )}
                 </Stack>
                 {props.features && (
-                    <Stack
-                        direction={
-                            props.featuresOrientation ===
-                            FeaturesOrientation.HORIZONTAL
-                                ? "row"
-                                : "column"
-                        }
+                    <MotionStack
+                        direction={{
+                            base: "column",
+                            md:
+                                props.featuresOrientation ===
+                                FeaturesOrientation.HORIZONTAL
+                                    ? "row"
+                                    : "column",
+                        }}
                         gap={"4"}
                         sx={{
                             "& > div": {
@@ -92,16 +171,20 @@ export default function CTA(props: CTAProps) {
                                 flexBasis: 0,
                             },
                         }}
+                        {...getFeatureAnimationProps()}
                     >
                         {props.features.map((elem) => {
                             return (
                                 <ContentfulComponentFeatureBlock
                                     key={elem?.id ?? ""}
+                                    overrideFeatureOrientation={
+                                        overrideFeatureOrientation
+                                    }
                                     {...(elem as Queries.ContentfulComponentFeatureBlock)}
                                 />
                             );
                         })}
-                    </Stack>
+                    </MotionStack>
                 )}
                 {props.content && (
                     <div
@@ -147,6 +230,7 @@ export const query = graphql`
             }
         }
         featuresOrientation
+        featuresAnimation
         features {
             ...FeatureBlockComponent
             contentful_id
@@ -163,6 +247,7 @@ export const query = graphql`
             }
         }
         alignContentText
+        titleAnimation
         #        features {
         #            fields {
         #                title {
