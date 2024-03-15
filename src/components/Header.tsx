@@ -1,6 +1,20 @@
 import React from "react";
-import { Box, Flex, Text, useTheme } from "@chakra-ui/react";
+import {
+    Box,
+    Button,
+    Flex,
+    Modal,
+    ModalBody,
+    ModalContent,
+    ModalOverlay,
+    Text,
+    useDisclosure,
+    useTheme,
+    VStack,
+} from "@chakra-ui/react";
 import { graphql, Link } from "gatsby";
+import { motion, AnimatePresence } from "framer-motion";
+
 import Logo from "./Logo";
 import ActionItem from "@/components/ActionItem";
 import { debugProps } from "@/modules/debug";
@@ -18,7 +32,7 @@ const MenuItem = ({
     const theme = useTheme();
     return (
         <Text
-            mr={{ base: 0, sm: isLast ? 0 : 8 }}
+            mr={{ base: 0, sm: isLast ? 0 : 4 }}
             color={theme.colors.gray["700"]}
             _hover={{ color: "fg.default" }}
             fontWeight={theme.fontWeights.medium}
@@ -60,10 +74,11 @@ const MenuIcon = () => {
 };
 
 type HeaderProps = Queries.HeaderComponentFragment;
+
+const MotionModalBody = motion(ModalBody);
 const Header = (props: HeaderProps) => {
     debugProps("Header", props);
-    const [show, setShow] = React.useState(false);
-    const toggleMenu = () => setShow(!show);
+    const { isOpen, onOpen, onClose, onToggle } = useDisclosure();
     const theme = useTheme();
 
     return (
@@ -74,26 +89,98 @@ const Header = (props: HeaderProps) => {
             wrap="wrap"
             w="100%"
             mb={{ sm: 4, md: 8 }}
-            // p={{ sm: 4, md: 8 }}
             p={theme.space["4"]}
-            bg={["primary.500", "primary.500", "transparent", "transparent"]}
+            bg={"bg.surface"}
             color={["white", "white", "primary.700", "primary.700"]}
+            zIndex={1800}
             {...props}
         >
-            <Flex align="center">
+            <Flex align="center" zIndex={1800}>
                 <Logo />
             </Flex>
 
             <Box
                 cursor={"pointer"}
                 display={{ base: "block", md: "none" }}
-                onClick={toggleMenu}
+                onClick={onToggle}
+                zIndex={1800}
             >
-                {show ? <CloseIcon /> : <MenuIcon />}
+                {isOpen ? <CloseIcon /> : <MenuIcon />}
             </Box>
 
+            <Modal
+                isOpen={isOpen}
+                onClose={onClose}
+                closeOnOverlayClick={true}
+                closeOnEsc={true}
+                styleConfig={{
+                    modal: {
+                        position: "fixed",
+                        top: 0,
+                        maxWidth: "100vw",
+                        width: "100%",
+                        zIndex: 1400,
+                    },
+                }}
+                motionPreset={"slideInTop"}
+            >
+                <ModalContent
+                    as={"div"}
+                    containerProps={{ marginTop: 100 }}
+                    zIndex={1500}
+                    dropShadow={"xl"}
+                >
+                    <ModalOverlay onClick={onClose} />
+                    <AnimatePresence>
+                        {isOpen && (
+                            <MotionModalBody
+                                p={4}
+                                bg={"bg.surface"}
+                                shadow={"xl"}
+                                dropShadow={"lg"}
+                                zIndex={1500}
+                                initial={{ y: -50, opacity: 1 }}
+                                animate={{ y: 0, opacity: 1 }}
+                                exit={{ y: -5, opacity: 1 }}
+                                transition={{ duration: 0.25 }}
+                            >
+                                <VStack gap={1} alignItems={"flex-start"}>
+                                    {props.links &&
+                                        props.links.map((elem) => (
+                                            <Button
+                                                py={4}
+                                                as={Link}
+                                                key={elem?.title ?? ""}
+                                                to={elem?.link ?? "/"}
+                                                variant={"ghost"}
+                                                width={"100%"}
+                                                justifyContent={"flex-start"}
+                                                color={theme.colors.gray["700"]}
+                                                fontWeight={
+                                                    theme.fontWeights.medium
+                                                }
+                                                fontSize={theme.fontSizes.lg}
+                                            >
+                                                {elem?.title}
+                                            </Button>
+                                        ))}
+
+                                    {props.cta && (
+                                        <Box pl={4} w={"xs"} py={2}>
+                                            <ActionItem
+                                                {...props.cta}
+                                                width={"150px"}
+                                            />
+                                        </Box>
+                                    )}
+                                </VStack>
+                            </MotionModalBody>
+                        )}
+                    </AnimatePresence>
+                </ModalContent>
+            </Modal>
             <Box
-                display={{ base: show ? "block" : "none", md: "block" }}
+                display={{ base: "none", md: "block" }}
                 flexBasis={{ base: "100%", md: "auto" }}
             >
                 <Flex
@@ -104,6 +191,7 @@ const Header = (props: HeaderProps) => {
                         "flex-end",
                         "flex-end",
                     ]}
+                    gap={{ base: 0, md: 2, lg: 4 }}
                     direction={["column", "row", "row", "row"]}
                     pt={[4, 4, 0, 0]}
                 >
@@ -121,7 +209,7 @@ const Header = (props: HeaderProps) => {
                         height={"25px"}
                         borderLeft={"1px solid"}
                         borderLeftColor={"gray.600"}
-                        mr={8}
+                        mr={4}
                     />
                     {props.cta && <ActionItem {...props.cta} />}
                 </Flex>

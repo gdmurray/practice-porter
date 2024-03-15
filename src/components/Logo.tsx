@@ -5,7 +5,7 @@ import { navigate } from "gatsby";
 export default function Logo() {
     return (
         <Box
-            w={[150, 200, 250]}
+            w={[150, 200]}
             cursor={"pointer"}
             onClick={() => {
                 navigate("/");

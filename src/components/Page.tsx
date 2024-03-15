@@ -1,8 +1,11 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useMemo } from "react";
 import { Layout } from "@/components/Layout";
 import { Stack, useColorMode } from "@chakra-ui/react";
 import * as sections from "@/components/sections";
 import { debugProps } from "@/modules/debug";
+import { graphql, type HeadFC } from "gatsby";
+import styled from "@emotion/styled";
+import { SEOHead } from "@/components/SeoMetadata";
 
 export const Page = ({ data }: { data: any }) => {
     // const { colorMode } = useColorMode();
@@ -25,16 +28,38 @@ export const Page = ({ data }: { data: any }) => {
     //     changeFavicon(colorMode);
     // }, [colorMode]); // Only re-run the effect if colorMode changes
 
-    const { body, header, footer } =
+    const { body, header, footer, stylesOverride } =
         data.contentfulPage as Queries.ContentfulPage;
+
+    const StylesOverride = useMemo(() => {
+        if (stylesOverride != null && stylesOverride.stylesOverride != null) {
+            console.log(
+                "Overriding styles with: ",
+                stylesOverride.stylesOverride,
+            );
+            return styled.div`
+                ${stylesOverride.stylesOverride}
+            `;
+        }
+
+        console.log("No Styles applied");
+        const WrapperComponent = ({
+            children,
+        }: {
+            children: React.ReactNode;
+        }) => <>{children}</>;
+        return WrapperComponent;
+    }, [stylesOverride]);
+
     if (header == null) {
         return <></>;
     }
     if (footer == null) {
         return <></>;
     }
+
     return (
-        <>
+        <StylesOverride>
             <Layout header={header} footer={footer}>
                 <Stack gap={"12"}>
                     {body?.map((elem) => {
@@ -54,6 +79,35 @@ export const Page = ({ data }: { data: any }) => {
                     })}
                 </Stack>
             </Layout>
-        </>
+        </StylesOverride>
     );
 };
+
+export const Head: HeadFC = ({ data }) => {
+    return <SEOHead data={data} />;
+};
+
+export const query = graphql`
+    fragment PageComponent on ContentfulPage {
+        id
+        header {
+            ...HeaderComponent
+        }
+        body {
+            __typename
+            ...HeroComponent
+            ...DuplexComponent
+            ...CTAComponent
+            ...CustomComponent
+        }
+        footer {
+            ...FooterComponent
+        }
+        seo {
+            ...SeoComponent
+        }
+        stylesOverride {
+            stylesOverride
+        }
+    }
+`;
