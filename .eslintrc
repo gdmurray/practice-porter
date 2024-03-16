@@ -5,20 +5,28 @@
       "jsx": true
     },
     "ecmaVersion": "latest",
-    "sourceType": "module"
+    "sourceType": "module",
+    "project": "./tsconfig.json"
   },
   "env": {
     "browser": true,
     "es6": true,
     "node": true
   },
-  "plugins": ["react", "jsx-a11y", "prettier", "@typescript-eslint"],
+  "plugins": [
+    "react",
+    "jsx-a11y",
+    "prettier",
+    "@typescript-eslint"
+  ],
   "extends": [
     "plugin:react/recommended",
     "plugin:react/jsx-runtime",
     "plugin:react-hooks/recommended",
     "standard",
-    "plugin:prettier/recommended"
+    "plugin:prettier/recommended",
+    "plugin:@typescript-eslint/eslint-recommended",
+    "plugin:@typescript-eslint/recommended"
   ],
   "rules": {
     "prettier/prettier": "error",
@@ -39,7 +47,20 @@
     "@typescript-eslint/explicit-function-return-type": "off",
     "@typescript-eslint/no-explicit-any": "off",
     "@typescript-eslint/no-var-requires": "off",
-    "@typescript-eslint/no-unused-vars": [2, { "argsIgnorePattern": "^_" }]
+    "@typescript-eslint/no-unused-vars": [
+      2,
+      {
+        "argsIgnorePattern": "^_",
+        "varsIgnorePattern": "React"
+      }
+    ],
+    "no-unused-vars": [
+      "warn",
+      {
+        "argsIgnorePattern": "^_",
+        "varsIgnorePattern": "React"
+      }
+    ]
   },
   "settings": {
     "import/resolver": {

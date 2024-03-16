@@ -1,49 +1,44 @@
-import * as React from "react"
-import { Link, HeadFC, PageProps } from "gatsby"
+import * as React from "react";
+import { Box, Button, Text, VStack, Link } from "@chakra-ui/react";
+import { HeadFC, Link as GatsbyLink } from "gatsby";
 
-const pageStyles = {
-  color: "#232129",
-  padding: "96px",
-  fontFamily: "-apple-system, Roboto, sans-serif, serif",
-}
-const headingStyles = {
-  marginTop: 0,
-  marginBottom: 64,
-  maxWidth: 320,
-}
+const NotFoundPage = () => {
+    return (
+        <Box textAlign="center" py="20" px="6">
+            <Text
+                display="inline-block"
+                align="center"
+                fontSize="180px"
+                fontWeight="bold"
+                color="primary.500"
+                textTransform="uppercase"
+                lineHeight="0.8"
+            >
+                404
+            </Text>
+            <Text fontSize="18px" mt="3" mb="2">
+                Page not found
+            </Text>
+            <Text color="gray.500" mb="6">
+                The page you’re looking for does not seem to exist
+            </Text>
 
-const paragraphStyles = {
-  marginBottom: 48,
-}
-const codeStyles = {
-  color: "#8A6534",
-  padding: 4,
-  backgroundColor: "#FFF4DB",
-  fontSize: "1.25rem",
-  borderRadius: 4,
-}
+            <Button
+                colorScheme="teal"
+                bg="teal.400"
+                color="white"
+                variant="solid"
+                as={GatsbyLink}
+                to="/"
+            >
+                Go to Home
+            </Button>
+        </Box>
+    );
+};
 
-const NotFoundPage: React.FC<PageProps> = () => {
-  return (
-    <main style={pageStyles}>
-      <h1 style={headingStyles}>Page not found</h1>
-      <p style={paragraphStyles}>
-        Sorry 😔, we couldn’t find what you were looking for.
-        <br />
-        {process.env.NODE_ENV === "development" ? (
-          <>
-            <br />
-            Try creating a page in <code style={codeStyles}>src/pages/</code>.
-            <br />
-          </>
-        ) : null}
-        <br />
-        <Link to="/">Go home</Link>.
-      </p>
-    </main>
-  )
-}
+export default NotFoundPage;
 
-export default NotFoundPage
-
-export const Head: HeadFC = () => <title>Not found</title>
+export const Head: HeadFC = () => (
+    <title>Practice Porter - Page Not found</title>
+);
