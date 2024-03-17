@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
     Box,
     Button,
@@ -76,7 +76,61 @@ const MenuIcon = () => {
 type HeaderProps = Queries.HeaderComponentFragment;
 
 const MotionModalBody = motion(ModalBody);
+
 const Header = (props: HeaderProps) => {
+    const [isVisible, setIsVisible] = useState(false);
+
+    // Detect scroll position
+    useEffect(() => {
+        const handleScroll = () => {
+            if (window.scrollY > 150) {
+                // Adjust this value based on your requirement
+                setIsVisible(true);
+            } else {
+                setIsVisible(false);
+            }
+        };
+
+        window.addEventListener("scroll", handleScroll);
+
+        return () => window.removeEventListener("scroll", handleScroll);
+    }, []);
+
+    console.log("Is Visible: ", isVisible);
+
+    return (
+        <>
+            <HeaderComponent props={props} flexProps={{}} />
+            <AnimatePresence>
+                {isVisible && (
+                    <motion.div
+                        initial={{ y: -100 }}
+                        animate={{ y: 0 }}
+                        // exit={{ y: -100 }}
+                        transition={{ duration: 0.5 }}
+                    >
+                        <HeaderComponent
+                            props={props}
+                            flexProps={{
+                                position: "fixed",
+                                top: 0,
+                                shadow: "md",
+                            }}
+                        />
+                    </motion.div>
+                )}
+            </AnimatePresence>
+        </>
+    );
+};
+
+const HeaderComponent = ({
+    props,
+    flexProps,
+}: {
+    props: HeaderProps;
+    flexProps: any;
+}) => {
     debugProps("Header", props);
     const { isOpen, onOpen, onClose, onToggle } = useDisclosure();
     const theme = useTheme();
@@ -93,7 +147,7 @@ const Header = (props: HeaderProps) => {
             bg={"bg.surface"}
             color={["white", "white", "primary.700", "primary.700"]}
             zIndex={1800}
-            {...props}
+            {...flexProps}
         >
             <Flex align="center" zIndex={1800}>
                 <Logo />
