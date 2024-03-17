@@ -96,8 +96,6 @@ const Header = (props: HeaderProps) => {
         return () => window.removeEventListener("scroll", handleScroll);
     }, []);
 
-    console.log("Is Visible: ", isVisible);
-
     return (
         <>
             <HeaderComponent props={props} flexProps={{}} />

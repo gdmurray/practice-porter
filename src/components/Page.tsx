@@ -33,16 +33,11 @@ export const Page = ({ data }: { data: any }) => {
 
     const StylesOverride = useMemo(() => {
         if (stylesOverride != null && stylesOverride.stylesOverride != null) {
-            console.log(
-                "Overriding styles with: ",
-                stylesOverride.stylesOverride,
-            );
             return styled.div`
                 ${stylesOverride.stylesOverride}
             `;
         }
 
-        console.log("No Styles applied");
         const WrapperComponent = ({
             children,
         }: {
@@ -71,7 +66,6 @@ export const Page = ({ data }: { data: any }) => {
                         const Component =
                             sections[typeName as keyof typeof sections] || null;
                         if (Component != null) {
-                            console.log("ID: ", id);
                             return <Component key={id} {...componentProps} />;
                         }
                         console.error("Could not find component: ", typeName);
