@@ -56,7 +56,7 @@ export const Page = ({ data }: { data: any }) => {
     return (
         <StylesOverride>
             <Layout header={header} footer={footer}>
-                <Stack gap={"12"}>
+                <Stack gap={"12"} alignItems={"center"}>
                     {body?.map((elem) => {
                         const {
                             id,

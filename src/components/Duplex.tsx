@@ -70,6 +70,7 @@ export default function Duplex(props: Queries.DuplexComponentFragment) {
                 md: props.align === DuplexAlign.RIGHT ? "row" : "row-reverse",
             }}
             ref={ref}
+            maxW={"8xl"}
             {...(props.anchor != null ? { id: props.anchor } : {})}
         >
             <MotionFlex

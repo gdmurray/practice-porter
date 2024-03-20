@@ -129,7 +129,7 @@ export default function CTA(props: CTAProps) {
         >
             <Stack
                 p={8}
-                maxW={"6xl"}
+                maxW={"8xl"}
                 w={"full"}
                 {...getStackProps(props)}
                 {...getAdditionalStyles(props)}

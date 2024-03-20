@@ -1,6 +1,7 @@
 import { graphql } from "gatsby";
 import React from "react";
 import {
+    Box,
     Flex,
     Heading,
     Stack,
@@ -11,8 +12,9 @@ import {
 import { RichText } from "@/components/RichText";
 import { Asset } from "@/components/Asset";
 import { debugProps } from "@/modules/debug";
+import CustomComponent from "./Custom";
 
-enum HeroImageLocation {
+export enum HeroImageLocation {
     LEFT = "Left",
     RIGHT = "Right",
     BOTTOM = "Bottom",
@@ -21,7 +23,7 @@ enum HeroImageLocation {
 }
 
 type HeroProps = Queries.HeroComponentFragment;
-function getFlexDirection(imageLocation: HeroImageLocation) {
+export function getFlexDirection(imageLocation: HeroImageLocation) {
     if (imageLocation === HeroImageLocation.TOP) {
         return "column-reverse";
     }
@@ -42,6 +44,13 @@ export default function Hero(props: HeroProps) {
 
     const paddingX = useBreakpointValue({ base: 4, md: 8 });
     const fontSize = useBreakpointValue({ base: "3xl", md: "4xl" });
+
+    if (props.customComponent != null && props.customComponent.name != null) {
+        return (
+            <CustomComponent name={props.customComponent.name} props={props} />
+        );
+    }
+
     if (imageLocation === HeroImageLocation.BACKGROUND) {
         const isBackgroundVideo =
             props.image?.file?.contentType?.startsWith("video");
@@ -121,6 +130,7 @@ export default function Hero(props: HeroProps) {
                 base: "column",
                 md: getFlexDirection(imageLocation as HeroImageLocation),
             }}
+            maxW={"8xl"}
             {...(props.anchor != null ? { id: props.anchor } : {})}
         >
             <Flex p={8} flex={1} align={"center"} justify={"center"}>
@@ -167,5 +177,8 @@ export const query = graphql`
         }
         imageLocation
         anchor
+        customComponent {
+            ...CustomComponent
+        }
     }
 `;
