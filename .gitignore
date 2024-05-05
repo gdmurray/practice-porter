@@ -16,3 +16,7 @@ src/gatsby-types.d.ts
 .Trashes
 ehthumbs.db
 Thumbs.db
+
+build/
+
+resources

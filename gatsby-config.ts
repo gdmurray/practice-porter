@@ -15,9 +15,20 @@ const config: GatsbyConfig = {
             resolve: "gatsby-source-contentful",
             options: {
                 accessToken: process.env.CONTENTFUL_ACCESS_TOKEN,
-                spaceId: "p7euki1xo8bo",
+                spaceId: process.env.CONTENTFUL_SPACE_ID ?? "dimwdxeylbq0",
+                forceFullSync: true,
+                host: process.env.CONTENTFUL_HOST ?? "cdn.contentful.com",
+                richText: {
+                    resolveFieldLocales: true,
+                },
             },
         },
+        // {
+        //     resolve: "gatsby-plugin-graphql-codegen",
+        //     options: {
+        //         fileName: `./src/graphql/generated.ts`, // or any path you prefer
+        //     },
+        // },
         "gatsby-plugin-image",
         "gatsby-plugin-sharp",
         "gatsby-transformer-sharp",
@@ -28,7 +39,7 @@ const config: GatsbyConfig = {
             options: {
                 name: "Practice Porter",
                 start_url: "/",
-                icon: "src/images/favicon.png",
+                icon: "src/images/favicon-light.png",
             },
         },
         {

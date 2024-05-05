@@ -1,20 +1,46 @@
-import React from "react";
-import { Box, Flex, Text, useTheme } from "@chakra-ui/react";
-import { Link } from "gatsby";
-import Logo from "./Logo";
+import React, { useEffect, useState } from "react";
+import {
+    Box,
+    Button,
+    Flex,
+    Modal,
+    ModalBody,
+    ModalContent,
+    ModalOverlay,
+    Text,
+    useDisclosure,
+    useTheme,
+    VStack,
+} from "@chakra-ui/react";
+import { graphql, Link } from "gatsby";
+import { motion, AnimatePresence } from "framer-motion";
 
-const MenuItem = ({ children, isLast, to = "/", ...rest }) => {
+import Logo from "./Logo";
+import ActionItem from "@/components/ActionItem";
+import { debugProps } from "@/modules/debug";
+
+const MenuItem = ({
+    children,
+    isLast,
+    to = "/",
+    ...rest
+}: {
+    children: React.ReactNode;
+    isLast: boolean;
+    to: string | null;
+} & { [key: string]: any }) => {
     const theme = useTheme();
     return (
         <Text
-            mr={{ base: 0, sm: isLast ? 0 : 8 }}
-            color={theme.colors.black}
+            mr={{ base: 0, sm: isLast ? 0 : 4 }}
+            color={theme.colors.gray["700"]}
+            _hover={{ color: "fg.default" }}
             fontWeight={theme.fontWeights.medium}
             fontSize={theme.fontSizes.lg}
             display="block"
             {...rest}
         >
-            <Link to={to}>{children}</Link>
+            <Link to={to ?? ""}>{children}</Link>
         </Text>
     );
 };
@@ -47,36 +73,166 @@ const MenuIcon = () => {
     );
 };
 
-const Header = (props) => {
-    const [show, setShow] = React.useState(false);
-    const toggleMenu = () => setShow(!show);
+type HeaderProps = Queries.HeaderComponentFragment;
+
+const MotionModalBody = motion(ModalBody);
+
+const Header = (props: HeaderProps) => {
+    const [isVisible, setIsVisible] = useState(false);
+
+    // Detect scroll position
+    useEffect(() => {
+        const handleScroll = () => {
+            if (window.scrollY > 150) {
+                // Adjust this value based on your requirement
+                setIsVisible(true);
+            } else {
+                setIsVisible(false);
+            }
+        };
+
+        window.addEventListener("scroll", handleScroll);
+
+        return () => window.removeEventListener("scroll", handleScroll);
+    }, []);
+
+    return (
+        <>
+            <HeaderComponent props={props} flexProps={{}} />
+            <AnimatePresence>
+                {isVisible && (
+                    <motion.div
+                        initial={{ y: -100 }}
+                        animate={{ y: 0 }}
+                        // exit={{ y: -100 }}
+                        transition={{ duration: 0.5 }}
+                    >
+                        <HeaderComponent
+                            props={props}
+                            flexProps={{
+                                position: "fixed",
+                                top: 0,
+                                shadow: "md",
+                            }}
+                        />
+                    </motion.div>
+                )}
+            </AnimatePresence>
+        </>
+    );
+};
+
+const HeaderComponent = ({
+    props,
+    flexProps,
+}: {
+    props: HeaderProps;
+    flexProps: any;
+}) => {
+    debugProps("Header", props);
+    const { isOpen, onOpen, onClose, onToggle } = useDisclosure();
     const theme = useTheme();
+
     return (
         <Flex
-            as="nav"
+            as="header"
             align="center"
             justify="space-between"
             wrap="wrap"
             w="100%"
             mb={{ sm: 4, md: 8 }}
-            // p={{ sm: 4, md: 8 }}
             p={theme.space["4"]}
-            bg={["primary.500", "primary.500", "transparent", "transparent"]}
+            bg={"bg.surface"}
             color={["white", "white", "primary.700", "primary.700"]}
-            {...props}
+            zIndex={1800}
+            {...flexProps}
         >
-            <Flex align="center">
-                <Logo
-                // color={["white", "white", "primary.500", "primary.500"]}
-                />
+            <Flex align="center" zIndex={1800}>
+                <Logo />
             </Flex>
 
-            <Box display={{ base: "block", md: "none" }} onClick={toggleMenu}>
-                {show ? <CloseIcon /> : <MenuIcon />}
+            <Box
+                cursor={"pointer"}
+                display={{ base: "block", md: "none" }}
+                onClick={onToggle}
+                zIndex={1800}
+            >
+                {isOpen ? <CloseIcon /> : <MenuIcon />}
             </Box>
 
+            <Modal
+                isOpen={isOpen}
+                onClose={onClose}
+                closeOnOverlayClick={true}
+                closeOnEsc={true}
+                styleConfig={{
+                    modal: {
+                        position: "fixed",
+                        top: 0,
+                        maxWidth: "100vw",
+                        width: "100%",
+                        zIndex: 1400,
+                    },
+                }}
+                motionPreset={"slideInTop"}
+            >
+                <ModalContent
+                    as={"div"}
+                    containerProps={{ marginTop: 100 }}
+                    zIndex={1500}
+                    dropShadow={"xl"}
+                >
+                    <ModalOverlay onClick={onClose} />
+                    <AnimatePresence>
+                        {isOpen && (
+                            <MotionModalBody
+                                p={4}
+                                bg={"bg.surface"}
+                                shadow={"xl"}
+                                dropShadow={"lg"}
+                                zIndex={1500}
+                                initial={{ y: -50, opacity: 1 }}
+                                animate={{ y: 0, opacity: 1 }}
+                                exit={{ y: -5, opacity: 1 }}
+                                transition={{ duration: 0.25 }}
+                            >
+                                <VStack gap={1} alignItems={"flex-start"}>
+                                    {props.links &&
+                                        props.links.map((elem) => (
+                                            <Button
+                                                py={4}
+                                                as={Link}
+                                                key={elem?.title ?? ""}
+                                                to={elem?.link ?? "/"}
+                                                variant={"ghost"}
+                                                width={"100%"}
+                                                justifyContent={"flex-start"}
+                                                color={theme.colors.gray["700"]}
+                                                fontWeight={
+                                                    theme.fontWeights.medium
+                                                }
+                                                fontSize={theme.fontSizes.lg}
+                                            >
+                                                {elem?.title}
+                                            </Button>
+                                        ))}
+
+                                    {props.cta && (
+                                        <Box pl={4} w={"xs"} py={2}>
+                                            <ActionItem
+                                                {...props.cta}
+                                                width={"150px"}
+                                            />
+                                        </Box>
+                                    )}
+                                </VStack>
+                            </MotionModalBody>
+                        )}
+                    </AnimatePresence>
+                </ModalContent>
+            </Modal>
             <Box
-                display={{ base: show ? "block" : "none", md: "block" }}
+                display={{ base: "none", md: "block" }}
                 flexBasis={{ base: "100%", md: "auto" }}
             >
                 <Flex
@@ -87,10 +243,27 @@ const Header = (props) => {
                         "flex-end",
                         "flex-end",
                     ]}
+                    gap={{ base: 0, md: 2, lg: 4 }}
                     direction={["column", "row", "row", "row"]}
                     pt={[4, 4, 0, 0]}
                 >
-                    <MenuItem to="/">Coming Soon</MenuItem>
+                    {props.links &&
+                        props.links.map((elem) => (
+                            <MenuItem
+                                isLast={false}
+                                key={elem?.title ?? ""}
+                                to={elem?.link ?? "/"}
+                            >
+                                {elem?.title}
+                            </MenuItem>
+                        ))}
+                    <Box
+                        height={"25px"}
+                        borderLeft={"1px solid"}
+                        borderLeftColor={"gray.600"}
+                        mr={4}
+                    />
+                    {props.cta && <ActionItem {...props.cta} />}
                 </Flex>
             </Box>
         </Flex>
@@ -98,3 +271,26 @@ const Header = (props) => {
 };
 
 export default Header;
+
+export const query = graphql`
+    fragment HeaderComponent on ContentfulHeader {
+        links {
+            title
+            icon
+            iconPosition
+            link
+            opensInNewTab
+        }
+        cta {
+            ...ActionItemComponent
+        }
+        logo {
+            description
+            title
+            file {
+                fileName
+                url
+            }
+        }
+    }
+`;

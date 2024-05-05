@@ -1,6 +1,12 @@
-import * as React from "react";
+import React from "react";
+import { RenderBodyArgs } from "gatsby";
+import { ColorModeScript } from "@chakra-ui/react";
+// import theme from "./src/@chakra-ui/gatsby-plugin/theme";
 
-export const onRenderBody = ({ setHeadComponents }) => {
+export const onRenderBody = ({
+    setHeadComponents,
+    setPreBodyComponents,
+}: RenderBodyArgs) => {
     setHeadComponents([
         <link
             rel="preload"
@@ -11,4 +17,10 @@ export const onRenderBody = ({ setHeadComponents }) => {
             key="generalSansFont"
         />,
     ]);
+    // setPreBodyComponents([
+    //     <ColorModeScript
+    //         key={"colormode"}
+    //         initialColorMode={theme.config.initialColorMode}
+    //     />,
+    // ]);
 };
