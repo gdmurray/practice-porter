@@ -6,6 +6,7 @@ import { LazyIcon } from "@/components/LazyIcon";
 import { TablerIconsProps } from "@tabler/icons-react";
 import { Asset } from "@/components/Asset";
 import { debugProps } from "@/modules/debug";
+import { MarkdownRenderer } from "@/components/MarkdownRenderer";
 
 export enum FeatureBlockLayout {
     VERTICAL = "Vertical",
@@ -65,6 +66,7 @@ export default function FeatureBlock(props: FeatureBlockProps) {
 
     return (
         <Stack
+            className={"feature-block"}
             direction={
                 featureBlockOrientation === FeatureBlockLayout.VERTICAL
                     ? "column"
@@ -73,7 +75,7 @@ export default function FeatureBlock(props: FeatureBlockProps) {
             alignItems={
                 featureBlockOrientation === FeatureBlockLayout.VERTICAL
                     ? "center"
-                    : "flex-start"
+                    : "center"
             }
             gap={4}
         >
@@ -84,7 +86,9 @@ export default function FeatureBlock(props: FeatureBlockProps) {
                 </Text>
                 {props.description && props.description.description && (
                     <Text variant={"secondary"} fontSize={"md"}>
-                        {props.description.description}
+                        <MarkdownRenderer
+                            markdownText={props.description.description}
+                        />
                     </Text>
                 )}
             </Stack>

@@ -23,6 +23,7 @@ import {
     Sector,
 } from "recharts";
 import styled from "@emotion/styled";
+import { motion } from "framer-motion";
 
 const TranslucentBox = ({
     props,
@@ -84,10 +85,161 @@ const ActiveSegment = (props: any) => {
         </g>
     );
 };
+
+// const Sparkle = (props: Sparkle) => {
+//     const { distance, angle } = props;
+//     // Adjust the distance based on angle for an oval shape (more elongated horizontally)
+//     // const horizontalRatio = 1.7857; // Wider than it is tall
+//     // const verticalRatio = 1.5;
+//     // const x = distance * horizontalRatio * Math.cos(angle);
+//     // const y = distance * verticalRatio * Math.sin(angle);
+//
+//     const xOffset = Math.cos(angle) * distance;
+//     const yOffset = Math.sin(angle) * distance;
+//     return (
+//         <div
+//             className="sparkle"
+//             style={{
+//                 // top: `calc(50% + ${y}px)`, // Center vertically and adjust by y
+//                 // left: `calc(50% + ${x}px)`, // Center horizontally and adjust by x
+//                 // transform: "translate(-50%, -50%)", // Ensure the sparkle is centered on its position
+//                 // top: `50%`, // Start from the center vertically
+//                 // left: `50%`, // Start from the center horizontally
+//                 // transform: `translate(${xOffset}px, ${yOffset}px)`, // Move from center to around the switch
+//                 top: "50%", // Start from the center vertically
+//                 left: "50%", // Start from the center horizontally
+//                 transform: `translate(${xOffset}px, ${yOffset}px)`, // Offset from center based on angle
+//                 transformOrigin: "center", // Ensure transformations pivot around the center
+//             }}
+//         >
+//             ✨
+//         </div>
+//     );
+// };
+//
+// const SparkleBox = styled.div`
+//     position: relative;
+//     display: inline-block;
+//     width: 50px;
+//     height: 28px;
+//     @keyframes sparkle {
+//         0% {
+//             transform: scale(0);
+//             opacity: 1;
+//         }
+//         100% {
+//             transform: scale(1);
+//             opacity: 0.25;
+//         }
+//     }
+//
+//     .sparkle {
+//         position: absolute;
+//         animation: sparkle 0.6s linear forwards;
+//         font-size: 24px; // Adjust size as needed
+//     }
+// `;
+//
+// type Sparkle = {
+//     id: number;
+//     angle: number;
+//     distance: number;
+// };
+// const SparkleSwitch = () => {
+//     const [sparkles, setSparkles] = useState<Sparkle[]>([]);
+//
+//     const theme = useTheme();
+//
+//     const handleToggle = () => {
+//         // Create multiple sparkles at random positions
+//         const newSparkles = Array.from({ length: 5 }).map((_, index) => ({
+//             id: Math.random(), // Unique key for React elements
+//             angle: (index / 10) * 2 * Math.PI, // Distribute sparkles evenly in an oval
+//             distance: 20, // Base distance from the center of the switch
+//         }));
+//         setSparkles(newSparkles);
+//
+//         // Clear sparkles after animation ends
+//         setTimeout(() => setSparkles([]), 600); // Match the timeout to the animation duration
+//     };
+//
+//     return (
+//         <SparkleBox>
+//             <Switch
+//                 onChange={handleToggle}
+//                 sx={{
+//                     ".chakra-switch__track": {
+//                         background: theme.colors.fg.default,
+//                     },
+//                     ".chakra-switch__thumb": {
+//                         _checked: {
+//                             bg: theme.colors.brand["200"],
+//                         },
+//                     },
+//                 }}
+//                 size="lg"
+//             />
+//             {sparkles.map((sparkle) => (
+//                 <Sparkle key={sparkle.id} {...sparkle} />
+//             ))}
+//         </SparkleBox>
+//     );
+// };
+
+// const MotionSwitch = motion(Switch);
+const MotionDiv = motion.div;
+
+const ShakingSwitch = () => {
+    const theme = useTheme();
+    const [isChecked, setIsChecked] = useState(false);
+    // const controls = useAnimation();
+    //
+    // useEffect(() => {
+    //     if (isChecked) {
+    //         controls.start({
+    //             x: [0, -10, 10, -10, 10, 0], // Keyframes for shaking
+    //             transition: { type: "spring", stiffness: 200, damping: 5 },
+    //         });
+    //     }
+    // }, [isChecked]);
+
+    const handleToggle = () => {
+        setIsChecked(!isChecked);
+    };
+
+    return (
+        <MotionDiv
+            animate={
+                isChecked
+                    ? {
+                          x: [0, -2, 2, -2, 2, 0], // Keyframes for shaking
+                          transition: { duration: 0.4 }, // Define the duration of the animation
+                      }
+                    : {}
+            }
+        >
+            <Switch
+                isChecked={isChecked}
+                onChange={handleToggle}
+                // animate={controls} // Attach the animation controls to the component
+                sx={{
+                    ".chakra-switch__track": {
+                        background: theme.colors.fg.default,
+                    },
+                    ".chakra-switch__thumb": {
+                        _checked: {
+                            bg: theme.colors.brand["200"],
+                        },
+                    },
+                }}
+                size="lg"
+            />
+        </MotionDiv>
+    );
+};
 export const LandingPageHero = (props: Queries.HeroComponentFragment) => {
     console.log("Props from landing page hero: ", props);
     const theme = useTheme();
-    console.log(theme);
     const imageLocation = props.imageLocation;
     const [animationEnded, setAnimationEnded] = useState(false);
     return (
@@ -105,20 +257,22 @@ export const LandingPageHero = (props: Queries.HeroComponentFragment) => {
             <Flex p={8} flex={1} align={"center"} justify={"center"}>
                 <Stack spacing={8} w={"full"} maxW={"xl"}>
                     <HStack>
-                        <Switch
-                            isChecked={true}
-                            sx={{
-                                ".chakra-switch__track": {
-                                    background: theme.colors.fg.default,
-                                },
-                                ".chakra-switch__thumb": {
-                                    _checked: {
-                                        bg: theme.colors.brand["200"],
-                                    },
-                                },
-                            }}
-                            size="lg"
-                        />
+                        <ShakingSwitch />
+                        {/* <SparkleSwitch /> */}
+                        {/* <Switch */}
+                        {/*     // isChecked={false} */}
+                        {/*     sx={{ */}
+                        {/*         ".chakra-switch__track": { */}
+                        {/*             background: theme.colors.fg.default, */}
+                        {/*         }, */}
+                        {/*         ".chakra-switch__thumb": { */}
+                        {/*             _checked: { */}
+                        {/*                 bg: theme.colors.brand["200"], */}
+                        {/*             }, */}
+                        {/*         }, */}
+                        {/*     }} */}
+                        {/*     size="lg" */}
+                        {/* /> */}
                         <Text fontSize={14} lineHeight={"14px"}>
                             <b>Turn on</b> your Dental practice&apos;s full
                             potential with Practice Porter&apos;s new patient

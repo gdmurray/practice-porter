@@ -49,6 +49,8 @@
     "react-hook-form": "^7.50.1",
     "react-intersection-observer": "^9.8.1",
     "recharts": "^2.12.3",
+    "remark": "^15.0.1",
+    "remark-html": "^16.0.1",
     "tsconfig-paths-webpack-plugin": "^4.1.0"
   },
   "devDependencies": {

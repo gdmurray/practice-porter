@@ -165,6 +165,7 @@ export default function CTA(props: CTAProps) {
                                     : "column",
                         }}
                         gap={"4"}
+                        mt={4}
                         sx={{
                             "& > div": {
                                 flexGrow: 1,

@@ -1,6 +1,6 @@
-import React, { useEffect, useMemo } from "react";
+import React, { useMemo } from "react";
 import { Layout } from "@/components/Layout";
-import { Stack, useColorMode } from "@chakra-ui/react";
+import { Stack } from "@chakra-ui/react";
 import * as sections from "@/components/sections";
 import { debugProps } from "@/modules/debug";
 import { graphql, type HeadFC } from "gatsby";
@@ -66,6 +66,15 @@ export const Page = ({ data }: { data: any }) => {
                         const Component =
                             sections[typeName as keyof typeof sections] || null;
                         if (Component != null) {
+                            if (
+                                typeName ===
+                                "ContentfulComponentCollapsibleSection"
+                            ) {
+                                console.log(
+                                    "props being passed?: ",
+                                    componentProps,
+                                );
+                            }
                             return <Component key={id} {...componentProps} />;
                         }
                         console.error("Could not find component: ", typeName);
@@ -93,6 +102,7 @@ export const query = graphql`
             ...DuplexComponent
             ...CTAComponent
             ...CustomComponent
+            ...CollapsibleSectionComponent
         }
         footer {
             ...FooterComponent
