@@ -1,11 +1,10 @@
 import { graphql } from "gatsby";
-import React from "react";
+import React, { useRef } from "react";
 import { Flex, Heading, Stack } from "@chakra-ui/react";
 import { RichText } from "@/components/RichText";
 import { Asset } from "@/components/Asset";
 import { debugProps } from "@/modules/debug";
-import { motion } from "framer-motion";
-import { useInView } from "react-intersection-observer";
+import { motion, useInView } from "framer-motion";
 
 enum DuplexAlign {
     LEFT = "Left",
@@ -19,10 +18,10 @@ enum DuplexAnimation {
 const MotionFlex = motion(Flex);
 export default function Duplex(props: Queries.DuplexComponentFragment) {
     debugProps("Duplex", props);
-
-    const { ref, inView } = useInView({
-        triggerOnce: true, // Optional: Animation triggers only once
-        threshold: 0.5, // Optional: Adjust based on when you want the animation to start
+    const ref = useRef<HTMLDivElement>(null);
+    const inView = useInView(ref, {
+        once: true,
+        margin: "0px 0px -250px 0px",
     });
 
     const textAnimationDirection =

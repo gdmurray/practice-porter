@@ -66,15 +66,6 @@ export const Page = ({ data }: { data: any }) => {
                         const Component =
                             sections[typeName as keyof typeof sections] || null;
                         if (Component != null) {
-                            if (
-                                typeName ===
-                                "ContentfulComponentCollapsibleSection"
-                            ) {
-                                console.log(
-                                    "props being passed?: ",
-                                    componentProps,
-                                );
-                            }
                             return <Component key={id} {...componentProps} />;
                         }
                         console.error("Could not find component: ", typeName);

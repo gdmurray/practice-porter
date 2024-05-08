@@ -23,13 +23,15 @@ export async function getSheetsClient(): Promise<sheets_v4.Sheets> {
 }
 
 // eslint-disable-next-line camelcase
-export async function appendSignupToSheet(client: sheets_v4.Sheets, data) {
+export async function appendSignupToSheet(client: sheets_v4.Sheets, data: any) {
     const keyOrder = ["email", "practice", "name", "patients"];
     await client.spreadsheets.values.append({
         spreadsheetId: process.env.GOOGLE_SHEETS_SPREADSHEET_ID,
         range: "Signups!A1",
         valueInputOption: "USER_ENTERED",
-        resource: { values: [keyOrder.map((key) => data[key])] },
+        requestBody: {
+            values: [keyOrder.map((key) => data[key])],
+        },
     });
 }
 

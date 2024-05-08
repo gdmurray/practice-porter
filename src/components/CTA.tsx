@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import { graphql } from "gatsby";
 import {
     Flex,
@@ -11,8 +11,7 @@ import { ContentfulComponentFeatureBlock } from "@/components/sections";
 import { RichText } from "@/components/RichText";
 import { debugProps } from "@/modules/debug";
 import { FeatureBlockLayout } from "@/components/FeatureBlock";
-import { useInView } from "react-intersection-observer";
-import { motion } from "framer-motion";
+import { motion, useInView } from "framer-motion";
 import { TypingAnimation } from "@/components/TypingAnimation";
 
 // direction = Column.. Stacked
@@ -34,10 +33,10 @@ const MotionStack = motion(Stack);
 
 export default function CTA(props: CTAProps) {
     debugProps("CTA", props);
-
-    const { ref, inView } = useInView({
-        triggerOnce: true,
-        threshold: 0.5,
+    const ref = useRef<HTMLDivElement>(null);
+    const inView = useInView(ref, {
+        once: true,
+        margin: "0px 0px -250px 0px",
     });
 
     const overrideFeatureOrientation: FeatureBlockLayout | null | undefined =
@@ -55,7 +54,7 @@ export default function CTA(props: CTAProps) {
                 visible: {
                     opacity: 1,
                     y: 0,
-                    transition: { duration: 0.5 },
+                    transition: { duration: 0.5, delay: 0.2 },
                 },
             },
         };
@@ -68,7 +67,7 @@ export default function CTA(props: CTAProps) {
                 visible: {
                     opacity: 1,
                     x: 0,
-                    transition: { duration: 0.5 },
+                    transition: { duration: 0.5, delay: 0.2 },
                 },
             },
         };

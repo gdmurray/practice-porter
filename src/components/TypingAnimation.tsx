@@ -1,13 +1,13 @@
-import React, { useEffect, useState } from "react";
-import { motion } from "framer-motion";
-import { useInView } from "react-intersection-observer";
+import React, { useEffect, useRef, useState } from "react";
+import { motion, useInView } from "framer-motion";
 
 export const TypingAnimation = ({ title = "", typingSpeed = 100 }) => {
     const [displayedTitle, setDisplayedTitle] = useState("");
     const [charIndex, setCharIndex] = useState(0);
-    const { ref, inView } = useInView({
-        triggerOnce: true,
-        threshold: 0.5, // Adjust this value based on when you want the animation to start
+    const ref = useRef<HTMLDivElement>(null);
+    const inView = useInView(ref, {
+        once: true,
+        margin: "0px 0px -200px 0px",
     });
 
     useEffect(() => {
@@ -27,7 +27,7 @@ export const TypingAnimation = ({ title = "", typingSpeed = 100 }) => {
                 ref={ref}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5 }}
+                transition={{ duration: 0.5, delay: 0.5 }}
             >
                 {displayedTitle}
             </motion.div>

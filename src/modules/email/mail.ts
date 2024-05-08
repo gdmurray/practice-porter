@@ -72,7 +72,7 @@ export async function sendEmail(emails: Email[]) {
         let emailInfo: { path: string; subject: string };
 
         try {
-            emailInfo = emailConfig[name];
+            emailInfo = emailConfig[name as keyof typeof emailConfig];
         } catch (err) {
             console.error("Could not get email info for: ", email, err);
             throw err;
@@ -80,7 +80,7 @@ export async function sendEmail(emails: Email[]) {
 
         try {
             const templatePath =
-                process.env.NODE_ENV.toUpperCase() === "PRODUCTION"
+                process.env?.NODE_ENV?.toUpperCase() === "PRODUCTION"
                     ? path.join(__dirname, "..", "email", emailInfo.path)
                     : path.join("src/modules/email", emailInfo.path);
 
