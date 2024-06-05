@@ -8,6 +8,7 @@ import {
     Stack,
     Switch,
     Text,
+    useBreakpointValue,
     useTheme,
 } from "@chakra-ui/react";
 import { getFlexDirection, HeroImageLocation } from "@/components/Hero";
@@ -242,6 +243,7 @@ export const LandingPageHero = (props: Queries.HeroComponentFragment) => {
     const theme = useTheme();
     const imageLocation = props.imageLocation;
     const [animationEnded, setAnimationEnded] = useState(false);
+    const maxWidth = useBreakpointValue({ base: "100%", md: "600px" });
     return (
         <Stack
             className={"hero"}
@@ -311,7 +313,11 @@ export const LandingPageHero = (props: Queries.HeroComponentFragment) => {
                 >
                     <Asset
                         props={props.image as Queries.AssetComponentFragment}
-                        contentProps={{ objectFit: "cover", maxWidth: "600px" }}
+                        contentProps={{
+                            objectFit: "cover",
+                            maxWidth,
+                            width: "auto",
+                        }}
                     />
                     {/* Top left overlay */}
                     <TranslucentBox props={{ top: "15%", left: "-2%" }}>

@@ -5,3 +5,9 @@
     font-style: normal;
     src: url(/fonts/GeneralSans-Variable.woff2) format("woff2");
 }
+
+html,
+body {
+    max-width: 100vw;
+    overflow-x: hidden;
+}
