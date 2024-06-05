@@ -111,7 +111,7 @@ export default function CTA(props: CTAProps) {
         if (props.background) {
             return {
                 background: props.background,
-                w: "99vw",
+                w: "100vw",
                 justifyContent: "center",
             };
         }

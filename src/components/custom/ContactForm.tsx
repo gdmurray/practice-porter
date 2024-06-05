@@ -10,6 +10,7 @@ import {
     Stack,
     Text,
     Textarea,
+    useBreakpointValue,
     useTheme,
 } from "@chakra-ui/react";
 import { useForm } from "react-hook-form";
@@ -39,11 +40,16 @@ export const ContactForm = () => {
         window.open(mailToLink, "_blank");
     }
 
+    const formMinWidth = useBreakpointValue({
+        base: "100%",
+        sm: theme.sizes.sm,
+    });
+
     return (
         <Flex
             bg={"bg.muted"}
             alignSelf={"center"}
-            w={"99vw"}
+            w={"100vw"}
             justifyContent={"center"}
             id={"contact"}
             py={16}
@@ -76,7 +82,7 @@ export const ContactForm = () => {
                             borderRadius={"lg"}
                             p={{ base: 4, md: 6, lg: 16 }}
                             maxW={theme.sizes.lg}
-                            minW={theme.sizes.sm}
+                            minW={formMinWidth}
                             mr={"auto"}
                             ml={"auto"}
                             shadow={theme.shadows.md}
